@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="影像资料占位图三">
+  <rect width="1200" height="900" fill="#F5F1E8"/><path d="M0 0h1200v900H0z" fill="none" stroke="#DDD8CF" stroke-width="36"/>
+  <path d="M250 650c0-170 102-307 228-307s228 137 228 307" fill="none" stroke="#333" stroke-width="22"/>
+  <path d="M558 650c0-170 102-307 228-307s228 137 228 307" fill="none" stroke="#8C1D1D" stroke-width="22"/>
+  <circle cx="415" cy="327" r="45" fill="#A67C52"/><text x="169" y="778" fill="#8C1D1D" font-family="serif" font-size="52">点滴汇聚</text>
+</svg>

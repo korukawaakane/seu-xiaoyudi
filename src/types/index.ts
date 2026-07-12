@@ -20,18 +20,21 @@ export type SiteConfig = {
   showStats: boolean;
 };
 
-export type TimelineItem = {
-  date: string;
-  title: string;
-  description: string;
-};
-
 export type GalleryImage = {
   id: string;
   title: string;
   category: string;
   alt: string;
   type: PlaceholderImageType;
+};
+
+export type TimelineItem = {
+  date: string;
+  title: string;
+  description: string;
+  location?: string;
+  status?: string;
+  image?: GalleryImage;
 };
 
 export type TeamMember = {
@@ -43,6 +46,7 @@ export type TeamMember = {
 
 export type SourceItem = {
   label: string;
+  type?: string;
   description: string;
   url?: string;
 };

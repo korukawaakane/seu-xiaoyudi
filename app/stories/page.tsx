@@ -16,9 +16,10 @@ export default function StoriesPage() {
       <PageHero
         eyebrow="实践纪实"
         title="记录实践过程与现场材料"
-        description="纪实文章按分类和所属项目筛选，所有文章共用统一详情模板。"
+        description="纪实文章按分类、所属项目和年份筛选，全部文章共用统一的阅读详情页面。"
+        stat={{ value: String(stories.length), label: "篇已收录文章" }}
       />
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-space bg-paper">
         <Container>
           <StoriesExplorer projects={projects} stories={stories} />
         </Container>

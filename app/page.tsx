@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Archive, Layers3 } from "lucide-react";
 import { AchievementCard } from "@/src/components/cards/AchievementCard";
 import { PersonCard } from "@/src/components/cards/PersonCard";
 import { ProjectCard } from "@/src/components/cards/ProjectCard";
@@ -8,165 +8,179 @@ import { StoryCard } from "@/src/components/cards/StoryCard";
 import { GalleryGrid } from "@/src/components/sections/GalleryGrid";
 import { HomeHero } from "@/src/components/sections/HomeHero";
 import { Container } from "@/src/components/ui/Container";
+import { EmptyState } from "@/src/components/ui/EmptyState";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { StatCard } from "@/src/components/ui/StatCard";
-import { siteConfig, siteStats } from "@/src/config/site";
+import { homeContent } from "@/src/data/content";
+import { platformPrinciples, siteConfig } from "@/src/config/site";
 import { achievements } from "@/src/data/achievements";
 import { projects } from "@/src/data/projects";
 import {
   getAchievementsByProject,
+  getArchiveStats,
   getFeaturedPeople,
   getFeaturedProject,
   getLatestStories,
   getProjectTitle,
+  getSortedProjects,
 } from "@/src/lib/data";
 
 export const metadata: Metadata = {
   title: "首页",
   description: siteConfig.description,
+  alternates: { canonical: "/" },
 };
 
 export default function Home() {
   const featuredProject = getFeaturedProject();
-  const featuredPeople = getFeaturedPeople(featuredProject.id);
+  const featuredPeople = featuredProject ? getFeaturedPeople(featuredProject.id) : [];
   const latestStories = getLatestStories(4);
-  const projectAchievements = getAchievementsByProject(featuredProject.id);
+  const projectAchievements = featuredProject
+    ? getAchievementsByProject(featuredProject.id)
+    : achievements.slice(0, 3);
+  const recentProjects = getSortedProjects(projects).slice(0, 3);
+  const archiveStats = getArchiveStats();
 
   return (
     <>
       <HomeHero project={featuredProject} />
 
-      <section className="bg-white py-14 sm:py-18">
+      <section className="section-space bg-white">
         <Container>
           <SectionHeading
             eyebrow="平台简介"
             title={siteConfig.subtitle}
-            description={`本平台用于记录${siteConfig.teamName}历届社会实践项目，整理实践过程、人物档案、影像资料与成果内容，让每一次实践都有迹可循。`}
+            description={homeContent.archiveIntro}
           />
-          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-            <div className="rounded-[8px] border border-line bg-paper p-6">
+          <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-start">
+            <div className="paper-texture border-l-4 border-brand p-6">
               <p className="font-serif text-3xl font-semibold text-brand">点滴汇聚</p>
-              <p className="mt-4 text-sm leading-7 text-muted">
-                以年份、学期和项目为稳定层级，将人物、纪实、影像和成果统一归档，后续新增资料只需要补充数据。
-              </p>
+              <p className="mt-4 text-sm leading-7 text-muted">{homeContent.archiveNote}</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
-              <StatCard label="项目层级" note="按年份与学期组织" value="年份" />
-              <StatCard label="详情模板" note="项目、人物和文章共用模板" value="统一" />
-              <StatCard label="内容状态" note="后续替换真实资料" value="占位" />
+              {platformPrinciples.map((principle) => (
+                <article className="border-t-2 border-brand/20 bg-paper p-5" key={principle.id}>
+                  <p className="font-serif text-xl font-semibold text-ink">{principle.title}</p>
+                  <p className="mt-3 text-sm leading-7 text-muted">{principle.description}</p>
+                </article>
+              ))}
             </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-paper py-14 sm:py-18">
+      <section className="section-space bg-paper">
         <Container>
           <SectionHeading
             action={{ label: "查看全部人物", href: "/people" }}
             eyebrow="当前项目人物"
             title="关联人物档案"
-            description="人物数量由项目数据动态决定，后续可按实践项目持续新增。"
+            description={homeContent.peopleDescription}
           />
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {featuredPeople.map((person) => (
-              <PersonCard
-                key={person.id}
-                person={person}
-                projectTitle={featuredProject.title}
-              />
-            ))}
-          </div>
+          {featuredPeople.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {featuredPeople.map((person) => (
+                <PersonCard
+                  key={person.id}
+                  person={person}
+                  projectTitle={featuredProject?.title}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState title="当前项目人物待补充" description="待项目与人物数据建立关联后，该区域会自动展示对应档案。" />
+          )}
         </Container>
       </section>
 
-      <section className="bg-white py-14 sm:py-18">
+      <section className="section-space bg-white">
         <Container>
           <SectionHeading
-            action={{ label: "进入实践纪实", href: "/stories" }}
+            action={{ label: "查看全部实践纪实", href: "/stories" }}
             eyebrow="最新实践动态"
-            title="纪实文章"
-            description="以新闻列表和文章卡片形式展示实践过程，完整内容进入实践纪实栏目。"
+            title="实践纪实"
+            description={homeContent.storiesDescription}
           />
-          <div className="grid gap-6 lg:grid-cols-2">
-            {latestStories.map((story) => (
-              <StoryCard
-                compact
-                key={story.id}
-                projectTitle={getProjectTitle(story.projectId)}
-                story={story}
-              />
-            ))}
-          </div>
+          {latestStories.length ? (
+            <div className="grid gap-1">
+              {latestStories.map((story) => (
+                <StoryCard compact key={story.id} projectTitle={getProjectTitle(story.projectId)} story={story} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState title="实践纪实待补充" description="新增纪实文章后，最新内容会自动在首页展示。" />
+          )}
         </Container>
       </section>
 
-      <section className="bg-paper py-14 sm:py-18">
+      <section className="section-space bg-paper">
         <Container>
-          <SectionHeading
-            eyebrow="精选影像"
-            title="影像资料占位"
-            description="当前使用统一占位组件展示实地走访、团队活动、场馆参观、采访调研、学习讨论与成果汇报等影像类别。"
-          />
-          <GalleryGrid images={featuredProject.gallery} />
+          <SectionHeading eyebrow="精选影像" title="影像记录" description={homeContent.galleryDescription} />
+          <GalleryGrid images={featuredProject?.gallery ?? []} />
         </Container>
       </section>
 
-      <section className="bg-white py-14 sm:py-18">
+      <section className="section-space bg-white">
         <Container>
           <SectionHeading
             action={{ label: "查看全部历届实践", href: "/projects" }}
             eyebrow="历届实践入口"
             title="近期实践项目"
-            description="所有实践项目共用同一套项目详情模板，按照年份和学期持续归档。"
+            description={homeContent.projectsDescription}
           />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {projects.slice(0, 3).map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+          {recentProjects.length ? (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {recentProjects.map((project) => <ProjectCard key={project.id} project={project} />)}
+            </div>
+          ) : (
+            <EmptyState title="实践项目待补充" description="新增项目数据后，该区域会按日期自动更新。" />
+          )}
+          <Link className="btn-secondary mt-8" href="/projects">
+            <Archive aria-hidden="true" size={18} />
+            浏览历届项目
+          </Link>
         </Container>
       </section>
 
-      <section className="bg-paper py-14 sm:py-18">
+      <section className="section-space bg-ink text-white">
         <Container>
           <SectionHeading
             action={{ label: "进入成果中心", href: "/achievements" }}
             eyebrow="成果展示"
             title="当前项目成果"
-            description="成果条目使用占位状态，不链接真实文件，后续可在数据文件中补充预览和下载地址。"
+            description={homeContent.achievementsDescription}
+            tone="dark"
           />
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {(projectAchievements.length ? projectAchievements : achievements.slice(0, 3)).map(
-              (achievement) => (
-                <AchievementCard
-                  achievement={achievement}
-                  key={achievement.id}
-                  projectTitle={getProjectTitle(achievement.projectId)}
-                />
-              ),
-            )}
+            {projectAchievements.map((achievement) => (
+              <AchievementCard
+                achievement={achievement}
+                key={achievement.id}
+                projectTitle={getProjectTitle(achievement.projectId)}
+              />
+            ))}
           </div>
-          <div className="mt-8">
-            <Link className="btn-secondary" href="/achievements">
-              查看成果中心
-              <ArrowRight aria-hidden="true" size={18} />
-            </Link>
-          </div>
+          <Link className="btn-secondary mt-8" href="/achievements">
+            查看成果中心
+            <ArrowRight aria-hidden="true" size={18} />
+          </Link>
         </Container>
       </section>
 
       {siteConfig.showStats ? (
-        <section className="bg-white py-14 sm:py-18">
+        <section className="section-space bg-white">
           <Container>
             <SectionHeading
               eyebrow="平台统计"
               title="归档数据概览"
-              description="当前为占位统计，后续应由项目、人物、纪实、影像和成果数据自动计算。"
+              description="统计数据直接由当前项目、人物、纪实、影像和成果条目计算。"
             />
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              {siteStats.map((stat) => (
-                <StatCard key={stat.label} {...stat} />
-              ))}
+              {archiveStats.map((stat) => <StatCard key={stat.label} {...stat} />)}
+            </div>
+            <div className="mt-8 flex items-center gap-2 text-sm text-muted">
+              <Layers3 aria-hidden="true" size={17} />
+              所有数量会随数据文件变化自动更新。
             </div>
           </Container>
         </section>

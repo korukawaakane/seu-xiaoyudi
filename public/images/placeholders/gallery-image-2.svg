@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="影像资料占位图二">
+  <rect width="1200" height="900" fill="#1D1D1D"/><path d="M112 112h976v676H112z" fill="none" stroke="#DDD8CF" stroke-width="4"/>
+  <path d="M215 625c145-94 241-101 342-22 85 66 181 52 274-77" fill="none" stroke="#A67C52" stroke-width="14"/>
+  <circle cx="832" cy="276" r="112" fill="none" stroke="#8C1D1D" stroke-width="19"/><circle cx="832" cy="276" r="28" fill="#F5F1E8"/>
+  <text x="188" y="230" fill="#F5F1E8" font-family="serif" font-size="54">实践现场</text>
+</svg>

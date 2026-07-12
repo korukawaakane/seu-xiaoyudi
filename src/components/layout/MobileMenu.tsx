@@ -14,13 +14,14 @@ export function MobileMenu({ isOpen, activePath, onClose }: MobileMenuProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="border-t border-line bg-paper md:hidden">
+    <div className="border-t border-line bg-paper md:hidden" id="mobile-navigation">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <span className="text-sm font-semibold text-ink">站点导航</span>
         <button
           aria-label="关闭导航菜单"
-          className="rounded-[8px] border border-line p-2 text-ink"
+          className="icon-button h-10 w-10"
           onClick={onClose}
+          title="关闭导航菜单"
           type="button"
         >
           <X aria-hidden="true" size={18} />
@@ -32,9 +33,10 @@ export function MobileMenu({ isOpen, activePath, onClose }: MobileMenuProps) {
             item.href === "/" ? activePath === "/" : activePath.startsWith(item.href);
           return (
             <Link
-              className={`rounded-[8px] px-3 py-3 text-sm font-medium transition ${
-                isActive ? "bg-brand text-white" : "text-ink hover:bg-white"
-              }`}
+              aria-current={isActive ? "page" : undefined}
+              className={isActive
+                ? "rounded-[8px] bg-brand px-3 py-3 text-sm font-medium text-white transition"
+                : "rounded-[8px] px-3 py-3 text-sm font-medium text-ink transition hover:bg-white"}
               href={item.href}
               key={item.href}
               onClick={onClose}

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
 import { AchievementCard } from "@/src/components/cards/AchievementCard";
 import { PersonCard } from "@/src/components/cards/PersonCard";
@@ -8,8 +8,10 @@ import { StoryCard } from "@/src/components/cards/StoryCard";
 import { GalleryGrid } from "@/src/components/sections/GalleryGrid";
 import { ProjectMeta } from "@/src/components/sections/ProjectMeta";
 import { Timeline } from "@/src/components/sections/Timeline";
+import { AnchorNav } from "@/src/components/ui/AnchorNav";
 import { Breadcrumb } from "@/src/components/ui/Breadcrumb";
 import { Container } from "@/src/components/ui/Container";
+import { EmptyState } from "@/src/components/ui/EmptyState";
 import { ImagePlaceholder } from "@/src/components/ui/ImagePlaceholder";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { SourceList } from "@/src/components/ui/SourceList";
@@ -18,6 +20,7 @@ import { projects } from "@/src/data/projects";
 import {
   getAchievementsByProject,
   getPeopleByProject,
+  getProjectAccent,
   getProjectBySlug,
   getProjectTitle,
   getStoriesByProject,
@@ -27,13 +30,21 @@ type ProjectDetailProps = {
   params: Promise<{ slug: string }>;
 };
 
+const projectAnchors = [
+  { id: "overview", label: "项目概况" },
+  { id: "people", label: "相关人物" },
+  { id: "timeline", label: "实践历程" },
+  { id: "stories", label: "实践纪实" },
+  { id: "gallery", label: "影像记录" },
+  { id: "achievements", label: "实践成果" },
+  { id: "team", label: "团队信息" },
+];
+
 export function generateStaticParams() {
   return projects.map((project) => ({ slug: project.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: ProjectDetailProps): Promise<Metadata> {
+export async function generateMetadata({ params }: ProjectDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return {};
@@ -41,6 +52,7 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
+    alternates: { canonical: "/projects/" + project.slug },
     openGraph: {
       title: project.title,
       description: project.summary,
@@ -57,11 +69,17 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
   const relatedPeople = getPeopleByProject(project.id);
   const relatedStories = getStoriesByProject(project.id);
   const relatedAchievements = getAchievementsByProject(project.id);
+  const statusLabel =
+    project.status === "published"
+      ? "当前展示"
+      : project.status === "archived"
+        ? "已归档"
+        : "资料整理中";
 
   return (
     <>
       <section className="hero-band border-b border-line bg-paper">
-        <Container className="py-12 sm:py-16">
+        <Container className="py-10 sm:py-16">
           <Breadcrumb
             items={[
               { label: "首页", href: "/" },
@@ -72,146 +90,147 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
           <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
             <div>
               <div className="flex flex-wrap gap-2">
-                <Tag tone="red">
-                  {project.year}年 {project.semester}
-                </Tag>
+                <Tag tone="red">{project.year}年 {project.semester}</Tag>
                 <Tag tone="bronze">{project.theme}</Tag>
+                <Tag tone="light">{statusLabel}</Tag>
               </div>
-              <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight text-ink sm:text-5xl">
-                {project.title}
-              </h1>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-muted">
-                {project.summary}
+              <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight text-ink sm:text-5xl">{project.title}</h1>
+              <p className="mt-4 text-sm font-semibold text-brand">{project.slogan}</p>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-muted">{project.summary}</p>
+              <p className="mt-4 inline-flex items-center gap-2 text-sm text-muted">
+                <MapPin aria-hidden="true" size={16} />
+                {project.location}
               </p>
-              <p className="mt-4 text-sm font-semibold text-brand">
-                {project.slogan}
-              </p>
+              <Link className="btn-secondary mt-7" href="/projects">
+                <ArrowLeft aria-hidden="true" size={18} />
+                返回历届实践
+              </Link>
             </div>
-            <ImagePlaceholder
-              alt={`${project.title}项目封面占位`}
-              className="aspect-[16/10] min-h-0"
-              label="项目封面首屏"
-              type="project"
-            />
+            <div className="border-t-4 pt-4" style={{ borderTopColor: getProjectAccent(project.themeColor) }}>
+              <ImagePlaceholder
+                alt={project.title + "项目封面占位"}
+                className="aspect-[16/10] min-h-0"
+                label="项目封面首屏"
+                type="project"
+              />
+            </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
+      <AnchorNav items={projectAnchors} label="项目详情导航" />
+
+      <section className="section-anchor section-space bg-white" id="overview">
         <Container>
-          <SectionHeading title="项目基本信息" description="基础字段来自项目数据文件，后续可直接替换为真实资料。" />
+          <SectionHeading title="项目概况" description="基础字段来自项目数据文件，后续可直接替换为经过确认的真实资料。" />
           <ProjectMeta project={project} />
-        </Container>
-      </section>
-
-      <section className="bg-paper py-12 sm:py-16">
-        <Container>
-          <div className="grid gap-8 lg:grid-cols-2">
+          <div className="mt-12 grid gap-10 lg:grid-cols-2">
             <div>
-              <SectionHeading title="实践背景" description={project.background ?? "背景说明待补充。"} />
+              <h2 className="font-serif text-2xl font-semibold text-ink">实践背景</h2>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-muted">{project.background ?? "背景说明待补充。"}</p>
             </div>
-            <div>
-              <SectionHeading title="实践目的" description={project.purpose ?? "实践目的待补充。"} />
+            <div className="border-l-2 border-brand/35 pl-6">
+              <h2 className="font-serif text-2xl font-semibold text-ink">实践目的</h2>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-muted">{project.purpose ?? "实践目的待补充。"}</p>
             </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
+      <section className="section-anchor section-space bg-paper" id="people">
         <Container>
-          <SectionHeading title="相关人物" description="项目关联人物由 personIds 动态生成。" />
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {relatedPeople.map((person) => (
-              <PersonCard key={person.id} person={person} projectTitle={project.title} />
-            ))}
-          </div>
+          <SectionHeading title="相关人物" description="项目关联人物由数据关系自动生成。" />
+          {relatedPeople.length ? (
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              {relatedPeople.map((person) => <PersonCard key={person.id} person={person} projectTitle={project.title} />)}
+            </div>
+          ) : (
+            <EmptyState title="相关人物待补充" description="为项目和人物建立关联后，该区域会自动显示。" />
+          )}
         </Container>
       </section>
 
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-anchor section-space bg-white" id="timeline">
         <Container>
-          <SectionHeading title="实践过程时间线" description="时间线节点可按项目持续追加。" />
+          <SectionHeading title="实践历程" description="时间线节点可持续追加日期、地点、状态与简要说明。" />
           <Timeline items={project.timeline} />
         </Container>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
+      <section className="section-anchor section-space bg-paper" id="stories">
         <Container>
-          <SectionHeading title="实践纪实文章" description="相关文章由项目关联 storyIds 统一查询。" />
-          <div className="grid gap-6 lg:grid-cols-2">
-            {relatedStories.map((story) => (
-              <StoryCard
-                compact
-                key={story.id}
-                projectTitle={getProjectTitle(story.projectId)}
-                story={story}
-              />
-            ))}
-          </div>
+          <SectionHeading title="实践纪实" description="相关文章通过项目关联自动读取。" />
+          {relatedStories.length ? (
+            <div className="grid gap-1">
+              {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={getProjectTitle(story.projectId)} story={story} />)}
+            </div>
+          ) : (
+            <EmptyState title="实践纪实待补充" description="新增并关联纪实文章后，该区域会自动更新。" />
+          )}
         </Container>
       </section>
 
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-anchor section-space bg-white" id="gallery">
         <Container>
-          <SectionHeading title="影像记录" description="影像记录使用统一占位组件，避免外部图片链接失效。" />
+          <SectionHeading title="影像记录" description="影像资料使用本地占位资源，可直接替换为经过授权的实践图片。" />
           <GalleryGrid images={project.gallery} />
         </Container>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
+      <section className="section-anchor section-space bg-paper" id="achievements">
         <Container>
-          <SectionHeading title="实践成果" description="本阶段成果文件处于整理中，不跳转无效链接。" />
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {relatedAchievements.map((achievement) => (
-              <AchievementCard
-                achievement={achievement}
-                key={achievement.id}
-                projectTitle={project.title}
-              />
-            ))}
-          </div>
+          <SectionHeading title="实践成果" description="成果文件处于整理中时不会跳转到无效地址。" />
+          {relatedAchievements.length ? (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {relatedAchievements.map((achievement) => (
+                <AchievementCard achievement={achievement} key={achievement.id} projectTitle={project.title} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState title="实践成果待补充" description="关联成果条目后，该区域会自动展示对应内容。" />
+          )}
         </Container>
       </section>
 
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-anchor section-space bg-white" id="team">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-2">
+          <div className="grid gap-10 lg:grid-cols-2">
             <div>
               <SectionHeading title="团队感悟" description="用于记录项目结束后的团队总结。" />
-              <ul className="grid gap-3">
-                {(project.reflections ?? []).map((reflection) => (
-                  <li className="rounded-[8px] border border-line bg-white p-4 text-sm leading-7 text-muted" key={reflection}>
-                    {reflection}
-                  </li>
-                ))}
-              </ul>
+              {(project.reflections ?? []).length ? (
+                <div className="grid gap-3">
+                  {(project.reflections ?? []).map((reflection) => (
+                    <blockquote className="quote-panel" key={reflection}>{reflection}</blockquote>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState title="团队感悟待补充" description="项目完成后可在数据文件中追加团队总结。" />
+              )}
             </div>
             <div>
               <SectionHeading title="团队成员与分工" description="当前仅使用占位成员，不填写真实团队资料。" />
-              <div className="grid gap-3">
-                {project.team.map((member) => (
-                  <div className="rounded-[8px] border border-line bg-white p-4" key={member.id}>
-                    <p className="font-semibold text-ink">{member.name}</p>
-                    <p className="mt-1 text-sm text-brand">{member.role}</p>
-                    <p className="mt-2 text-sm leading-7 text-muted">{member.description}</p>
-                  </div>
-                ))}
-              </div>
+              {project.team.length ? (
+                <div className="grid gap-3">
+                  {project.team.map((member) => (
+                    <article className="border-l-2 border-bronze bg-paper p-5" key={member.id}>
+                      <p className="font-semibold text-ink">{member.name}</p>
+                      <p className="mt-1 text-sm text-brand">{member.role}</p>
+                      <p className="mt-2 text-sm leading-7 text-muted">{member.description}</p>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState title="团队成员待补充" description="后续可在项目数据中增加成员占位或正式资料。" />
+              )}
             </div>
           </div>
         </Container>
       </section>
 
-      <section className="bg-white py-12 sm:py-16">
+      <section className="section-space bg-paper">
         <Container>
-          <SectionHeading title="资料来源" description="后续替换真实资料时，在项目数据中补充来源说明。" />
+          <SectionHeading title="资料来源" description="后续替换真实资料时，请在项目数据中一并补充来源说明。" />
           <SourceList sources={project.sources} />
-          <div className="mt-8">
-            <Link className="btn-secondary" href="/projects">
-              <ArrowLeft aria-hidden="true" size={18} />
-              返回历届实践
-            </Link>
-          </div>
         </Container>
       </section>
     </>

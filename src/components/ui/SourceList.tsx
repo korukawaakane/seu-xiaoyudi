@@ -19,10 +19,13 @@ export function SourceList({ sources }: SourceListProps) {
     <ul className="grid gap-3">
       {sources.map((source) => (
         <li className="rounded-[8px] border border-line bg-white p-4" key={source.label}>
-          <p className="font-semibold text-ink">{source.label}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-semibold text-ink">{source.label}</p>
+            {source.type ? <span className="text-xs font-medium text-muted">{source.type}</span> : null}
+          </div>
           <p className="mt-1 text-sm leading-7 text-muted">{source.description}</p>
           {source.url ? (
-            <a className="mt-2 inline-flex text-sm font-medium text-brand" href={source.url}>
+            <a className="mt-2 inline-flex text-sm font-medium text-brand" href={source.url} rel="noreferrer" target="_blank">
               查看来源
             </a>
           ) : null}

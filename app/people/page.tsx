@@ -15,10 +15,11 @@ export default function PeoplePage() {
     <>
       <PageHero
         eyebrow="人物档案"
-        title="通用人物档案模板"
-        description="人物字段保持通用，可收录访谈对象、榜样人物、历史人物和实践相关人物，不假设单一人物类型。"
+        title="连接实践与人物记忆"
+        description="人物字段保持通用，可收录访谈对象、榜样人物、历史人物和实践相关人物，不预设单一类型。"
+        stat={{ value: String(people.length), label: "份已收录档案" }}
       />
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-space bg-paper">
         <Container>
           <PeopleExplorer people={people} projects={projects} />
         </Container>

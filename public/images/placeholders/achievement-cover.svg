@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="成果封面占位图">
+  <rect width="1200" height="800" fill="#F5F1E8"/>
+  <rect x="158" y="111" width="510" height="584" fill="#fff" stroke="#DDD8CF" stroke-width="4"/>
+  <path d="M214 210h340M214 266h280M214 322h314M214 468h200M214 524h281" stroke="#DDD8CF" stroke-width="14"/>
+  <path d="m750 575 112-250 119 250Z" fill="#8C1D1D" fill-opacity=".9"/>
+  <circle cx="862" cy="250" r="84" fill="none" stroke="#A67C52" stroke-width="13"/>
+  <text x="214" y="622" fill="#8C1D1D" font-family="serif" font-size="47" font-weight="700">成果归档</text>
+</svg>

@@ -19,11 +19,11 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
           return (
             <li className="flex items-center gap-2" key={`${item.label}-${index}`}>
               {item.href && !isLast ? (
-                <Link className="hover:text-brand" href={item.href}>
+                <Link className="inline-flex min-h-9 max-w-44 items-center truncate rounded-[8px] transition hover:text-brand focus-visible:bg-paper" href={item.href}>
                   {item.label}
                 </Link>
               ) : (
-                <span aria-current={isLast ? "page" : undefined}>{item.label}</span>
+                <span aria-current={isLast ? "page" : undefined} className="max-w-48 truncate">{item.label}</span>
               )}
               {!isLast ? <ChevronRight aria-hidden="true" size={14} /> : null}
             </li>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="影像资料占位图一">
+  <rect width="1200" height="900" fill="#F5F1E8"/><path d="M0 690 265 420l220 190 170-130 275 210H0Z" fill="#DDD8CF"/>
+  <circle cx="878" cy="240" r="98" fill="#A67C52" fill-opacity=".62"/><path d="M115 708h970" stroke="#8C1D1D" stroke-width="8"/>
+  <path d="M190 157h220M190 205h132" stroke="#8C1D1D" stroke-width="10"/><text x="190" y="790" fill="#333" font-family="serif" font-size="50">影像记录</text>
+</svg>

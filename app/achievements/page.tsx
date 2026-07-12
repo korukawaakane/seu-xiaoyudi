@@ -15,10 +15,11 @@ export default function AchievementsPage() {
     <>
       <PageHero
         eyebrow="成果中心"
-        title="统一管理实践成果"
-        description="成果条目按类型和所属项目筛选，本阶段不提供真实文件下载，避免无效链接。"
+        title="让每份实践成果可持续归档"
+        description="成果条目按类型、所属项目、年份和关键词筛选；未提供真实文件时不会生成无效链接。"
+        stat={{ value: String(achievements.length), label: "项已收录成果" }}
       />
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-space bg-paper">
         <Container>
           <AchievementsExplorer achievements={achievements} projects={projects} />
         </Container>

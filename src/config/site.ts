@@ -9,13 +9,23 @@ export const siteConfig: SiteConfig = {
   secondarySlogan: "记录实践足迹，传承时代精神",
   description:
     "记录SEU“小雨滴”社会实践团历届社会实践项目、人物档案、实践纪实、影像资料与实践成果。",
-  showStats: false,
+  showStats: true,
 };
 
-export const siteStats = [
-  { label: "收录实践项目", value: "3", note: "后续由数据自动统计" },
-  { label: "收录人物档案", value: "6", note: "使用占位档案" },
-  { label: "发布纪实文章", value: "6", note: "使用占位文章" },
-  { label: "保存影像资料", value: "18", note: "使用占位影像" },
-  { label: "收录实践成果", value: "6", note: "使用占位成果" },
+export const platformPrinciples = [
+  {
+    id: "record",
+    title: "长期记录",
+    description: "以持续更新的方式保留每一次实践的过程与回响。",
+  },
+  {
+    id: "archive",
+    title: "分类归档",
+    description: "按年份、学期和项目整理人物、纪实、影像与成果。",
+  },
+  {
+    id: "inherit",
+    title: "精神传承",
+    description: "让分散的实践材料沉淀为可查阅、可延续的档案。",
+  },
 ];

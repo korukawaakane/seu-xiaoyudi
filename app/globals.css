@@ -9,9 +9,23 @@
   --color-bronze-dark: #76583a;
   --color-line: #ddd8cf;
   --color-muted: #665f58;
-  --shadow-soft: 0 12px 28px rgba(29, 29, 29, 0.08);
+  --shadow-soft: 0 14px 34px rgba(29, 29, 29, 0.08);
   --font-sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
   --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+}
+
+:root {
+  --site-brand: #8c1d1d;
+  --site-ink: #1d1d1d;
+  --site-paper: #f5f1e8;
+  --site-body: #333333;
+  --site-bronze: #a67c52;
+  --site-line: #ddd8cf;
+  --site-white: #ffffff;
+  --site-muted: #665f58;
+  --page-space: clamp(3.5rem, 7vw, 6.75rem);
+  --section-space: clamp(3.25rem, 6vw, 5.5rem);
+  --container-space: clamp(1rem, 3vw, 2rem);
 }
 
 @layer base {
@@ -26,74 +40,282 @@
   body {
     margin: 0;
     overflow-x: hidden;
-    background: #f9f6ef;
-    color: #333333;
-    font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: var(--site-paper);
+    color: var(--site-body);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+
+  button:not(:disabled),
+  select:not(:disabled),
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--site-brand) 48%, transparent);
+    outline-offset: 3px;
   }
 
   ::selection {
-    background: rgba(140, 29, 29, 0.16);
-    color: #1d1d1d;
+    background: color-mix(in srgb, var(--site-brand) 18%, transparent);
+    color: var(--site-ink);
   }
 }
 
 @layer components {
+  .section-space {
+    padding-block: var(--section-space);
+  }
+
   .card {
-    @apply rounded-[8px] border border-line bg-white p-5 shadow-soft transition duration-300 hover:-translate-y-1;
+    @apply rounded-[8px] border border-line bg-white p-5 shadow-soft transition duration-300;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--site-bronze) 45%, var(--site-line));
   }
 
   .btn-primary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-ink focus:outline-none focus:ring-2 focus:ring-brand/30;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] bg-brand px-5 py-3 text-sm font-semibold text-white transition duration-200 hover:bg-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:ring-offset-2;
+  }
+
+  .btn-primary:hover svg {
+    transform: translateX(2px);
   }
 
   .btn-secondary {
-    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] border border-brand/25 bg-white px-5 py-3 text-sm font-semibold text-brand transition hover:-translate-y-0.5 hover:border-brand hover:bg-paper focus:outline-none focus:ring-2 focus:ring-brand/30;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] border border-brand/25 bg-white px-5 py-3 text-sm font-semibold text-brand transition duration-200 hover:border-brand hover:bg-paper focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+
+  .btn-secondary:hover svg {
+    transform: translateX(2px);
   }
 
   .btn-disabled {
-    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-[8px] border border-line bg-paper px-4 py-2 text-sm font-medium text-muted;
+    @apply inline-flex min-h-10 cursor-not-allowed items-center justify-center gap-2 rounded-[8px] border border-line bg-paper px-4 py-2 text-sm font-medium text-muted opacity-80;
+  }
+
+  .icon-button {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-[8px] border border-line bg-white text-ink transition hover:border-brand hover:text-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/30 focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  }
+
+  .action-link {
+    @apply inline-flex min-h-10 items-center gap-2 rounded-[8px] py-2 pr-2 text-sm font-semibold text-brand transition hover:text-ink focus-visible:bg-paper;
+  }
+
+  .action-link-dark {
+    @apply inline-flex min-h-10 items-center gap-2 rounded-[8px] py-2 pr-2 text-sm font-semibold text-white transition hover:text-white/70 focus-visible:bg-white/10;
   }
 
   .field-control {
-    @apply min-h-11 rounded-[8px] border border-line bg-paper px-3 py-2 text-sm text-ink outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15;
-  }
-
-  .raindrop-mark {
-    display: inline-block;
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid rgba(140, 29, 29, 0.25);
-    border-radius: 68% 32% 54% 46% / 58% 36% 64% 42%;
-    background:
-      linear-gradient(135deg, rgba(140, 29, 29, 0.16), rgba(166, 124, 82, 0.12)),
-      #ffffff;
-    position: relative;
-    flex: 0 0 auto;
-  }
-
-  .raindrop-mark::after {
-    content: "";
-    position: absolute;
-    inset: 0.55rem;
-    border-radius: 999px;
-    border: 1px solid rgba(140, 29, 29, 0.28);
-  }
-
-  .raindrop-mark-dark {
-    border-color: rgba(255, 255, 255, 0.28);
-    background:
-      linear-gradient(135deg, rgba(245, 241, 232, 0.2), rgba(166, 124, 82, 0.22)),
-      rgba(255, 255, 255, 0.08);
+    @apply min-h-11 w-full rounded-[8px] border border-line bg-paper px-3 py-2 text-sm text-ink outline-none transition placeholder:text-muted/75 focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .hero-band {
     background-image:
-      linear-gradient(180deg, rgba(245, 241, 232, 0.96), rgba(249, 246, 239, 0.9)),
-      repeating-linear-gradient(135deg, rgba(140, 29, 29, 0.05) 0 1px, transparent 1px 18px);
+      linear-gradient(180deg, color-mix(in srgb, var(--site-paper) 94%, transparent), var(--site-paper)),
+      repeating-linear-gradient(135deg, color-mix(in srgb, var(--site-brand) 5%, transparent) 0 1px, transparent 1px 22px);
   }
 
-  .placeholder-surface {
+  .paper-texture {
+    background-image:
+      linear-gradient(90deg, color-mix(in srgb, var(--site-white) 92%, transparent), color-mix(in srgb, var(--site-paper) 86%, transparent)),
+      repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, var(--site-line) 35%, transparent) 31px 32px);
+  }
+
+  .waterdrop-mark {
+    position: relative;
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid color-mix(in srgb, var(--site-brand) 32%, transparent);
+    border-radius: 68% 32% 54% 46% / 58% 36% 64% 42%;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--site-brand) 14%, var(--site-white)), color-mix(in srgb, var(--site-bronze) 14%, var(--site-white)));
+    transform: rotate(45deg);
+  }
+
+  .waterdrop-mark-core {
+    width: 0.62rem;
+    height: 0.62rem;
+    border-radius: 50%;
+    background: var(--site-brand);
+  }
+
+  .waterdrop-mark-ripple {
+    position: absolute;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--site-brand) 32%, transparent);
+    border-radius: 50%;
+  }
+
+  .waterdrop-mark-ripple-one {
+    transform: translate(0.36rem, 0.36rem);
+  }
+
+  .waterdrop-mark-ripple-two {
+    transform: translate(-0.36rem, -0.36rem);
+  }
+
+  .waterdrop-mark > span {
+    transform: rotate(-45deg);
+  }
+
+  .waterdrop-mark-dark {
+    border-color: color-mix(in srgb, var(--site-white) 35%, transparent);
+    background: color-mix(in srgb, var(--site-white) 9%, transparent);
+  }
+
+  .waterdrop-mark-dark .waterdrop-mark-core {
+    background: var(--site-white);
+  }
+
+  .waterdrop-mark-dark .waterdrop-mark-ripple {
+    border-color: color-mix(in srgb, var(--site-white) 38%, transparent);
+  }
+
+  .ripple-decoration {
+    position: absolute;
+    right: clamp(1rem, 7vw, 8rem);
+    bottom: -2.75rem;
+    display: grid;
+    place-items: center;
+    width: 13rem;
+    height: 13rem;
+    pointer-events: none;
+  }
+
+  .ripple-decoration span {
+    position: absolute;
+    display: block;
+    border: 1px solid color-mix(in srgb, var(--site-brand) 22%, transparent);
+    border-radius: 50%;
+  }
+
+  .ripple-decoration span:nth-child(1) {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .ripple-decoration span:nth-child(2) {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .ripple-decoration span:nth-child(3) {
+    width: 11rem;
+    height: 11rem;
+  }
+
+  .ripple-decoration-light span {
+    border-color: color-mix(in srgb, var(--site-white) 24%, transparent);
+  }
+
+  .image-placeholder {
     isolation: isolate;
+  }
+
+  .image-placeholder img {
+    transform: scale(1.01);
+    transition: transform 280ms ease;
+  }
+
+  .image-placeholder:hover img,
+  .image-placeholder:focus-within img {
+    transform: scale(1.045);
+  }
+
+  .archive-year {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 7vw, 6.25rem);
+    line-height: 0.85;
+    color: color-mix(in srgb, var(--site-brand) 15%, var(--site-paper));
+  }
+
+  .anchor-nav {
+    position: sticky;
+    top: 5rem;
+    z-index: 30;
+  }
+
+  .section-anchor {
+    scroll-margin-top: 9rem;
+  }
+
+  .prose-panel {
+    max-width: 46rem;
+    color: var(--site-body);
+    font-size: 1rem;
+    line-height: 2;
+  }
+
+  .prose-panel p + p {
+    margin-top: 1.35rem;
+  }
+
+  .prose-panel p:first-child {
+    font-size: 1.1rem;
+    color: var(--site-ink);
+  }
+
+  .quote-panel {
+    border-left: 3px solid var(--site-brand);
+    padding: 1.1rem 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--site-ink);
+    background: color-mix(in srgb, var(--site-paper) 80%, var(--site-white));
+  }
+
+  .news-row {
+    display: grid;
+    grid-template-columns: 7.25rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--site-line);
+  }
+
+  .news-row:first-child {
+    border-top: 1px solid var(--site-line);
+  }
+
+  .lightbox-backdrop {
+    background: color-mix(in srgb, var(--site-ink) 88%, transparent);
+  }
+
+  .lightbox-image {
+    max-height: min(72vh, 48rem);
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 639px) {
+  .news-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .anchor-nav {
+    top: 4.5rem;
+  }
+
+  .ripple-decoration {
+    right: -3rem;
+    bottom: -4rem;
+    transform: scale(0.74);
   }
 }
 

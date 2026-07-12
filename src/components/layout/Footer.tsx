@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/src/config/site";
+import { BrandLogo } from "@/src/components/brand/BrandLogo";
 import { navigationItems } from "@/src/data/navigation";
 import { BackToTop } from "@/src/components/ui/BackToTop";
 import { Container } from "@/src/components/ui/Container";
@@ -10,13 +11,8 @@ export function Footer() {
       <Container className="py-12">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-3">
-              <span aria-hidden="true" className="raindrop-mark raindrop-mark-dark" />
-              <div>
-                <p className="font-serif text-xl font-semibold">{siteConfig.teamName}</p>
-                <p className="mt-2 text-sm text-white/70">{siteConfig.subtitle}</p>
-              </div>
-            </div>
+            <BrandLogo tone="dark" />
+            <p className="mt-3 text-sm text-white/70">{siteConfig.subtitle}</p>
             <p className="mt-5 max-w-xl text-sm leading-7 text-white/75">
               {siteConfig.slogan}
             </p>
@@ -27,7 +23,7 @@ export function Footer() {
             <ul className="mt-4 grid gap-2">
               {navigationItems.map((item) => (
                 <li key={item.href}>
-                  <Link className="text-sm text-white/70 hover:text-white" href={item.href}>
+                  <Link className="inline-flex min-h-9 items-center rounded-[8px] text-sm text-white/70 transition hover:text-white focus-visible:bg-white/10" href={item.href}>
                     {item.label}
                   </Link>
                 </li>

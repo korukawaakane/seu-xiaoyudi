@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="项目封面占位图">
+  <rect width="1200" height="800" fill="#F5F1E8"/>
+  <path d="M0 626H1200M0 692H1200" stroke="#DDD8CF" stroke-width="2"/>
+  <path d="M155 645H1045" stroke="#8C1D1D" stroke-width="5"/>
+  <path d="M760 115c80 105 117 166 117 232 0 90-73 163-163 163s-163-73-163-163c0-66 37-127 117-232 25-33 67-33 92 0Z" fill="none" stroke="#8C1D1D" stroke-width="13"/>
+  <circle cx="714" cy="347" r="53" fill="#A67C52" fill-opacity=".22"/>
+  <path d="M140 160h260M140 210h175M140 260h218" stroke="#333" stroke-opacity=".48" stroke-width="10"/>
+  <text x="140" y="560" fill="#8C1D1D" font-family="serif" font-size="58" font-weight="700">实践档案</text>
+  <text x="142" y="610" fill="#665F58" font-family="sans-serif" font-size="25" letter-spacing="6">PROJECT ARCHIVE</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="人物肖像占位图">
+  <rect width="900" height="1200" fill="#F5F1E8"/>
+  <path d="M90 1060H810M90 1110H720" stroke="#DDD8CF" stroke-width="3"/>
+  <circle cx="450" cy="375" r="150" fill="#DDD8CF"/>
+  <path d="M270 825c0-150 80-258 180-258s180 108 180 258v140H270Z" fill="#333"/>
+  <path d="M350 385c18 62 54 97 100 97s82-35 100-97" fill="none" stroke="#F5F1E8" stroke-width="14"/>
+  <circle cx="394" cy="350" r="12" fill="#8C1D1D"/><circle cx="506" cy="350" r="12" fill="#8C1D1D"/>
+  <path d="M143 135h220M143 185h148" stroke="#8C1D1D" stroke-width="9"/>
+  <text x="140" y="1020" fill="#8C1D1D" font-family="serif" font-size="49" font-weight="700">人物档案</text>
+</svg>

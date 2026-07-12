@@ -9,24 +9,28 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project }: ProjectCardProps) {
+  const statusLabel =
+    project.status === "published"
+      ? "当前展示"
+      : project.status === "archived"
+        ? "已归档"
+        : "资料整理中";
+
   return (
     <article className="card group">
       <ImagePlaceholder
-        alt={`${project.title}封面占位`}
-        className="aspect-[16/10] min-h-0 transition duration-300 group-hover:-translate-y-1"
-        label={`${project.year}年 ${project.semester}`}
+        alt={project.title + "封面占位"}
+        className="aspect-[16/10] min-h-0"
+        label={project.year + "年 " + project.semester}
         type="project"
       />
       <div className="mt-5 flex flex-wrap gap-2">
         <Tag tone="red">{project.year}年</Tag>
         <Tag tone="bronze">{project.semester}</Tag>
+        <Tag tone="light">{statusLabel}</Tag>
       </div>
-      <h2 className="mt-4 font-serif text-xl font-semibold text-ink">
-        {project.title}
-      </h2>
-      <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted">
-        {project.summary}
-      </p>
+      <h2 className="mt-4 font-serif text-xl font-semibold text-ink">{project.title}</h2>
+      <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted">{project.summary}</p>
       <div className="mt-4 flex items-center gap-2 text-sm text-muted">
         <MapPin aria-hidden="true" size={16} />
         <span>{project.location}</span>
@@ -45,7 +49,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <dd className="mt-1 font-semibold text-ink">{project.achievementIds.length}</dd>
         </div>
       </dl>
-      <Link className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand" href={`/projects/${project.slug}`}>
+      <Link className="action-link mt-5" href={"/projects/" + project.slug}>
         查看项目
         <ArrowRight aria-hidden="true" size={16} />
       </Link>

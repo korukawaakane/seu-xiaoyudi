@@ -15,9 +15,10 @@ export default function ProjectsPage() {
       <PageHero
         eyebrow="历届实践"
         title="按年份与学期持续归档"
-        description="所有实践项目共用统一数据结构和详情模板，后续新增学期时只需追加新的项目数据。"
+        description="所有实践项目共用统一数据结构和详情模板；后续新增学期时，只需添加新的项目数据。"
+        stat={{ value: String(projects.length), label: "个已收录项目" }}
       />
-      <section className="bg-paper py-12 sm:py-16">
+      <section className="section-space bg-paper">
         <Container>
           <ProjectsExplorer projects={projects} />
         </Container>
