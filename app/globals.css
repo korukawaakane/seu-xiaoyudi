@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #8c1d1d;
+  --color-ink: #1d1d1d;
+  --color-paper: #f5f1e8;
+  --color-body: #333333;
+  --color-bronze: #a67c52;
+  --color-bronze-dark: #76583a;
+  --color-line: #ddd8cf;
+  --color-muted: #665f58;
+  --shadow-soft: 0 12px 28px rgba(29, 29, 29, 0.08);
+  --font-sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  --font-serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    background: #f9f6ef;
+    color: #333333;
+    font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  }
+
+  ::selection {
+    background: rgba(140, 29, 29, 0.16);
+    color: #1d1d1d;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-[8px] border border-line bg-white p-5 shadow-soft transition duration-300 hover:-translate-y-1;
+  }
+
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-ink focus:outline-none focus:ring-2 focus:ring-brand/30;
+  }
+
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[8px] border border-brand/25 bg-white px-5 py-3 text-sm font-semibold text-brand transition hover:-translate-y-0.5 hover:border-brand hover:bg-paper focus:outline-none focus:ring-2 focus:ring-brand/30;
+  }
+
+  .btn-disabled {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-[8px] border border-line bg-paper px-4 py-2 text-sm font-medium text-muted;
+  }
+
+  .field-control {
+    @apply min-h-11 rounded-[8px] border border-line bg-paper px-3 py-2 text-sm text-ink outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/15;
+  }
+
+  .raindrop-mark {
+    display: inline-block;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(140, 29, 29, 0.25);
+    border-radius: 68% 32% 54% 46% / 58% 36% 64% 42%;
+    background:
+      linear-gradient(135deg, rgba(140, 29, 29, 0.16), rgba(166, 124, 82, 0.12)),
+      #ffffff;
+    position: relative;
+    flex: 0 0 auto;
+  }
+
+  .raindrop-mark::after {
+    content: "";
+    position: absolute;
+    inset: 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(140, 29, 29, 0.28);
+  }
+
+  .raindrop-mark-dark {
+    border-color: rgba(255, 255, 255, 0.28);
+    background:
+      linear-gradient(135deg, rgba(245, 241, 232, 0.2), rgba(166, 124, 82, 0.22)),
+      rgba(255, 255, 255, 0.08);
+  }
+
+  .hero-band {
+    background-image:
+      linear-gradient(180deg, rgba(245, 241, 232, 0.96), rgba(249, 246, 239, 0.9)),
+      repeating-linear-gradient(135deg, rgba(140, 29, 29, 0.05) 0 1px, transparent 1px 18px);
+  }
+
+  .placeholder-surface {
+    isolation: isolate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
