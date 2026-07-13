@@ -16,12 +16,13 @@ export function PersonCard({ person, projectTitle }: PersonCardProps) {
         alt={person.name + "照片占位"}
         className="aspect-[3/4] min-h-0"
         label={person.category}
+        src={person.portrait}
         type="person"
       />
       <div className="mt-5 flex flex-wrap gap-2">
         <Tag tone="red">{person.category}</Tag>
         {person.keywords.map((keyword) => (
-          <Tag key={keyword} tone="bronze">
+          <Tag key={keyword} tone="bronze" value={keyword}>
             {keyword}
           </Tag>
         ))}

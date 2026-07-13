@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">测试实践成果报告封面</title>
+  <desc id="desc">深红配色的匿名测试调研报告封面</desc>
+  <rect width="1200" height="800" fill="#8C1D1D"/>
+  <rect x="88" y="84" width="1024" height="632" fill="#F7F0E4"/>
+  <path d="M796 84h316v632H608c72-92 154-194 188-316 31-111 22-207 0-316Z" fill="#D8C7AF"/>
+  <path d="M834 183c0-48 42-92 42-92s42 44 42 92a42 42 0 1 1-84 0Z" fill="#8C1D1D"/>
+  <text x="164" y="325" fill="#542020" font-family="serif" font-size="62" font-weight="700">测试实践成果报告</text>
+  <text x="168" y="392" fill="#725F50" font-family="sans-serif" font-size="30">匿名测试调研报告 · CMS 文件管理验证</text>
+  <path d="M164 458h410" stroke="#8C1D1D" stroke-width="7"/>
+</svg>

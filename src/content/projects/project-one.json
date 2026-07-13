@@ -1,0 +1,42 @@
+{
+  "id": "project-one",
+  "slug": "project-one",
+  "title": "项目一",
+  "year": 2026,
+  "semester": "暑期社会实践",
+  "location": "实践地点示例",
+  "theme": "社会观察与档案整理",
+  "summary": "项目一用于演示项目、人物、纪实文章和成果之间的统一关联关系。",
+  "background": "这是用于验证长期归档结构的匿名项目背景示例，不对应任何真实实践活动或地点。",
+  "purpose": "通过走访记录、材料整理与成果汇编，演示社会实践数字档案的持续维护流程。",
+  "coverImage": "/images/placeholders/project-cover.svg",
+  "slogan": "记录实践足迹，沉淀档案成果。",
+  "featured": true,
+  "status": "published",
+  "tags": ["社会实践", "档案整理", "演示数据"],
+  "personIds": ["person-jia"],
+  "storyIds": ["story-example"],
+  "achievementIds": ["achievement-example"],
+  "timeline": [
+    {"date": "2026-07-01", "title": "项目启动", "description": "完成匿名演示项目的资料目录与任务分工。"},
+    {"date": "2026-07-03", "title": "实地记录", "description": "完成纪实示例所需的走访记录与材料整理。"},
+    {"date": "2026-07-07", "title": "成果归档", "description": "建立项目、人物、纪实与成果之间的关联。"}
+  ],
+  "gallery": [
+    {"id": "project-one-gallery-1", "title": "实地记录示例", "category": "实地走访", "alt": "项目一实地记录占位图", "type": "gallery", "src": "/images/placeholders/gallery-image-1.svg"},
+    {"id": "project-one-gallery-2", "title": "材料整理示例", "category": "资料整理", "alt": "项目一材料整理占位图", "type": "gallery", "src": "/images/placeholders/gallery-image-2.svg"}
+  ],
+  "teamIds": ["team-member-a", "team-member-b"],
+  "sources": [
+    {"id": "source-project-one-brief", "label": "项目材料说明示例", "type": "说明", "description": "匿名演示数据，仅用于验证数字档案的数据结构与关联方式。"}
+  ],
+  "createdBy": "资料整理组",
+  "createdAt": "2026-07-01T09:00:00+08:00",
+  "updatedBy": "资料整理组",
+  "updatedAt": "2026-07-07T18:00:00+08:00",
+  "source": "source-project-one-brief",
+  "startDate": "2026-07-01",
+  "endDate": "2026-07-07",
+  "themeColor": "#8C1D1D",
+  "reflections": ["本示例用于验证团队总结能够随项目数据一并长期维护。"]
+}

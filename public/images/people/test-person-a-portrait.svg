@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">测试人物A头像</title>
+  <desc id="desc">匿名测试人物的抽象水滴肖像</desc>
+  <rect width="800" height="800" fill="#F7F0E4"/>
+  <circle cx="400" cy="320" r="152" fill="#D8C7AF"/>
+  <path d="M400 110c-90 114-146 194-146 282a146 146 0 1 0 292 0c0-88-56-168-146-282Z" fill="#8C1D1D"/>
+  <path d="M210 714c29-154 121-225 190-225s161 71 190 225" fill="#542020"/>
+  <text x="400" y="750" fill="#F7F0E4" font-family="sans-serif" font-size="32" font-weight="700" text-anchor="middle">测试人物 A</text>
+</svg>

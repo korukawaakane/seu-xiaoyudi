@@ -5,7 +5,7 @@ import { PersonCard } from "@/src/components/cards/PersonCard";
 import { useQueryFilters } from "@/src/components/filters/useQueryFilters";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { FilterBar, FilterField } from "@/src/components/ui/FilterBar";
-import { getAvailableYears, searchPeople } from "@/src/lib/data";
+import { getAvailableYears, searchPeople } from "@/src/lib/content";
 import { uniqueValues } from "@/src/lib/utils";
 
 type PeopleExplorerProps = {

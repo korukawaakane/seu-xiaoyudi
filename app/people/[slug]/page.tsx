@@ -14,13 +14,13 @@ import { ImagePlaceholder } from "@/src/components/ui/ImagePlaceholder";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { SourceList } from "@/src/components/ui/SourceList";
 import { Tag } from "@/src/components/ui/Tag";
-import { people } from "@/src/data/people";
 import {
+  getPeople,
   getPersonBySlug,
   getProjectById,
   getProjectTitle,
   getStoriesByIds,
-} from "@/src/lib/data";
+} from "@/src/lib/content";
 import type { Project } from "@/src/types";
 
 type PersonDetailProps = {
@@ -37,19 +37,39 @@ const peopleAnchors = [
 ];
 
 export function generateStaticParams() {
-  return people.map((person) => ({ slug: person.slug }));
+  return getPeople().map((person) => ({ slug: person.slug }));
 }
 
 export async function generateMetadata({ params }: PersonDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const person = getPersonBySlug(slug);
   if (!person) return {};
+  const title = `${person.name}｜人物档案｜SEU“小雨滴”社会实践团`;
 
   return {
-    title: person.name + "｜人物档案",
+    title: { absolute: title },
     description: person.summary,
     alternates: { canonical: "/people/" + person.slug },
-    openGraph: { title: person.name, description: person.summary, type: "profile" },
+    openGraph: {
+      title,
+      description: person.summary,
+      url: "/people/" + person.slug,
+      type: "profile",
+      images: [
+        {
+          url: "/images/og-image.svg",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: person.summary,
+      images: ["/images/og-image.svg"],
+    },
   };
 }
 
@@ -75,11 +95,11 @@ export default async function PersonDetailPage({ params }: PersonDetailProps) {
             ]}
           />
           <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-            <ImagePlaceholder alt={person.name + "人物照片占位"} className="aspect-[3/4] min-h-0 max-w-md" label={person.category} type="person" />
+            <ImagePlaceholder alt={person.name + "人物照片占位"} className="aspect-[3/4] min-h-0 max-w-md" label={person.category} src={person.portrait} type="person" />
             <div>
               <div className="flex flex-wrap gap-2">
                 <Tag tone="red">{person.category}</Tag>
-                {person.keywords.map((keyword) => <Tag key={keyword} tone="bronze">{keyword}</Tag>)}
+                {person.keywords.map((keyword) => <Tag key={keyword} tone="bronze" value={keyword}>{keyword}</Tag>)}
               </div>
               <h1 className="mt-6 font-serif text-4xl font-semibold text-ink sm:text-5xl">{person.name}</h1>
               <p className="mt-3 text-sm text-muted">{person.years}</p>

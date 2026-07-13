@@ -16,15 +16,16 @@ import { ImagePlaceholder } from "@/src/components/ui/ImagePlaceholder";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { SourceList } from "@/src/components/ui/SourceList";
 import { Tag } from "@/src/components/ui/Tag";
-import { projects } from "@/src/data/projects";
 import {
   getAchievementsByProject,
   getPeopleByProject,
   getProjectAccent,
   getProjectBySlug,
   getProjectTitle,
+  getProjects,
   getStoriesByProject,
-} from "@/src/lib/data";
+  getTeamMembersByProject,
+} from "@/src/lib/content";
 
 type ProjectDetailProps = {
   params: Promise<{ slug: string }>;
@@ -41,22 +42,38 @@ const projectAnchors = [
 ];
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return getProjects().map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: ProjectDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return {};
+  const title = `${project.title}｜SEU“小雨滴”社会实践团`;
 
   return {
-    title: project.title,
+    title: { absolute: title },
     description: project.summary,
     alternates: { canonical: "/projects/" + project.slug },
     openGraph: {
-      title: project.title,
+      title,
       description: project.summary,
+      url: "/projects/" + project.slug,
       type: "article",
+      images: [
+        {
+          url: "/images/og-image.svg",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: project.summary,
+      images: ["/images/og-image.svg"],
     },
   };
 }
@@ -69,12 +86,15 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
   const relatedPeople = getPeopleByProject(project.id);
   const relatedStories = getStoriesByProject(project.id);
   const relatedAchievements = getAchievementsByProject(project.id);
+  const teamMembers = getTeamMembersByProject(project.id);
   const statusLabel =
     project.status === "published"
       ? "当前展示"
-      : project.status === "archived"
-        ? "已归档"
-        : "资料整理中";
+      : project.status === "review"
+        ? "等待审核"
+        : project.status === "archived"
+          ? "已归档"
+          : "资料整理中";
 
   return (
     <>
@@ -93,6 +113,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
                 <Tag tone="red">{project.year}年 {project.semester}</Tag>
                 <Tag tone="bronze">{project.theme}</Tag>
                 <Tag tone="light">{statusLabel}</Tag>
+                {project.tags.map((tag) => <Tag key={tag} tone="bronze" value={tag}>{tag}</Tag>)}
               </div>
               <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight text-ink sm:text-5xl">{project.title}</h1>
               <p className="mt-4 text-sm font-semibold text-brand">{project.slogan}</p>
@@ -111,6 +132,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
                 alt={project.title + "项目封面占位"}
                 className="aspect-[16/10] min-h-0"
                 label="项目封面首屏"
+                src={project.coverImage}
                 type="project"
               />
             </div>
@@ -209,9 +231,9 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
             </div>
             <div>
               <SectionHeading title="团队成员与分工" description="当前仅使用占位成员，不填写真实团队资料。" />
-              {project.team.length ? (
+              {teamMembers.length ? (
                 <div className="grid gap-3">
-                  {project.team.map((member) => (
+                  {teamMembers.map((member) => (
                     <article className="border-l-2 border-bronze bg-paper p-5" key={member.id}>
                       <p className="font-semibold text-ink">{member.name}</p>
                       <p className="mt-1 text-sm text-brand">{member.role}</p>

@@ -1,0 +1,324 @@
+# 首次启用前，请按 CMS_SETUP.md 填写 GitHub 仓库与 OAuth 代理地址。
+# 此文件会公开提供，绝不能在这里写入 OAuth client secret 或任何真实密钥。
+backend:
+  name: github
+  repo: "korukawaakane/seu-xiaoyudi"
+  branch: dev
+  base_url: "https://github.com/korukawaakane/seu-xiaoyudi"
+  auth_endpoint: auth
+  commit_messages:
+    create: "cms: 新增 {{collection}}“{{slug}}”"
+    update: "cms: 更新 {{collection}}“{{slug}}”"
+    delete: "cms: 删除 {{collection}}“{{slug}}”"
+    uploadMedia: "cms: 上传媒体“{{path}}”"
+
+publish_mode: simple
+media_folder: "public/images"
+public_folder: "/images"
+site_url: "https://REPLACE_WITH_PRODUCTION_DOMAIN"
+display_url: "https://REPLACE_WITH_PRODUCTION_DOMAIN"
+logo_url: "/favicon.svg"
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: projects
+    label: 项目
+    label_singular: 项目
+    folder: src/content/projects
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{year}} · {{title}} · {{status}}"
+    media_folder: "public/images/projects"
+    public_folder: "/images/projects"
+    fields:
+      - { label: 基础信息, name: projectBasicSection, widget: section-heading, required: false, hint: "名称、归档年份、学期与实践地点。" }
+      - { label: 内容 ID, name: id, widget: string, hint: "用于关联人物、文章和成果；创建后请不要修改。" }
+      - { label: 项目名称, name: title, widget: string }
+      - { label: URL 标识, name: slug, widget: string, hint: "仅用小写字母、数字和连字符。", pattern: ["^[a-z0-9-]+$", "只能使用小写字母、数字和连字符"] }
+      - { label: 年份, name: year, widget: number, value_type: int, min: 2000, max: 2100 }
+      - { label: 学期, name: semester, widget: select, options: ["春季学期", "暑期社会实践", "秋季学期"] }
+      - { label: 实践地点, name: location, widget: string }
+      - { label: 项目介绍, name: projectIntroductionSection, widget: section-heading, required: false, hint: "用于项目详情页的主题、简介、背景、目的与口号。" }
+      - { label: 项目主题, name: theme, widget: string }
+      - { label: 简介, name: summary, widget: text }
+      - { label: 项目背景, name: background, widget: text }
+      - { label: 实践目的, name: purpose, widget: text }
+      - { label: 展示设置, name: projectPresentationSection, widget: section-heading, required: false, hint: "上传图片会保存到 public/images/projects/。" }
+      - { label: 项目封面, name: coverImage, widget: image }
+      - { label: 项目口号, name: slogan, widget: string }
+      - { label: 首页推荐, name: featured, widget: boolean, default: false }
+      - { label: 发布状态, name: status, widget: select, options: [draft, review, published, archived], default: draft, hint: "draft 为编辑中；review 等待管理员审核；仅 published 会在公开前台展示。" }
+      - label: 标签
+        name: tags
+        widget: list
+        field: { label: 标签, name: tag, widget: string }
+      - { label: 关联内容, name: projectRelationsSection, widget: section-heading, required: false, hint: "填写其他内容条目的 ID，不要复制完整对象。" }
+      - label: 关联人物 ID
+        name: personIds
+        widget: list
+        required: false
+        field: { label: 人物 ID, name: personId, widget: string }
+      - label: 关联文章 ID
+        name: storyIds
+        widget: list
+        required: false
+        field: { label: 文章 ID, name: storyId, widget: string }
+      - label: 关联成果 ID
+        name: achievementIds
+        widget: list
+        required: false
+        field: { label: 成果 ID, name: achievementId, widget: string }
+      - { label: 扩展资料, name: projectExtensionsSection, widget: section-heading, required: false, hint: "时间线、图集、团队与来源可按需展开维护。" }
+      - label: 项目时间线
+        name: timeline
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 日期, name: date, widget: string }
+          - { label: 标题, name: title, widget: string }
+          - { label: 说明, name: description, widget: text }
+          - { label: 地点, name: location, widget: string, required: false }
+          - { label: 状态说明, name: status, widget: string, required: false }
+      - label: 图片集
+        name: gallery
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 图片 ID, name: id, widget: string }
+          - { label: 标题, name: title, widget: string }
+          - { label: 分类, name: category, widget: string }
+          - { label: 图片替代文本, name: alt, widget: string }
+          - { label: 图片类型, name: type, widget: select, options: [project, person, story, gallery, achievement] }
+          - { label: 图片文件, name: src, widget: image, required: false }
+          - { label: 图注, name: caption, widget: text, required: false }
+      - label: 团队成员 ID
+        name: teamIds
+        widget: list
+        required: false
+        field: { label: 成员 ID, name: teamId, widget: string }
+      - label: 资料来源
+        name: sources
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 来源 ID, name: id, widget: string }
+          - { label: 名称, name: label, widget: string }
+          - { label: 类型, name: type, widget: string, required: false }
+          - { label: 说明, name: description, widget: text }
+          - { label: 链接, name: url, widget: string, required: false }
+      - { label: 维护信息, name: projectMaintenanceSection, widget: section-heading, required: false, hint: "记录内容来源与最近维护情况。" }
+      - { label: 创建人, name: createdBy, widget: string }
+      - { label: 创建时间, name: createdAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 更新人, name: updatedBy, widget: string }
+      - { label: 更新时间, name: updatedAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 主来源说明, name: source, widget: string }
+      - { label: 开始日期, name: startDate, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
+      - { label: 结束日期, name: endDate, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD, required: false }
+      - { label: 主题色, name: themeColor, widget: color, required: false }
+      - label: 实践反思
+        name: reflections
+        widget: list
+        required: false
+        field: { label: 反思, name: reflection, widget: text }
+
+  - name: people
+    label: 人物
+    label_singular: 人物
+    folder: src/content/people
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    identifier_field: name
+    summary: "{{name}} · {{category}} · {{status}}"
+    media_folder: "public/images/people"
+    public_folder: "/images/people"
+    fields:
+      - { label: 基础信息, name: personBasicSection, widget: section-heading, required: false, hint: "姓名、URL 标识、分类与所属年份。" }
+      - { label: 内容 ID, name: id, widget: string, hint: "用于关联项目和文章；创建后请不要修改。" }
+      - { label: 姓名, name: name, widget: string }
+      - { label: URL 标识, name: slug, widget: string, pattern: ["^[a-z0-9-]+$", "只能使用小写字母、数字和连字符"] }
+      - { label: 分类, name: category, widget: string }
+      - { label: 所属年份, name: years, widget: string }
+      - { label: 人物介绍, name: personDetailsSection, widget: section-heading, required: false, hint: "人物档案正文只填写已授权、可公开的信息。" }
+      - { label: 籍贯, name: birthplace, widget: string }
+      - { label: 身份, name: identity, widget: string }
+      - { label: 简介, name: summary, widget: text }
+      - { label: 人物生平, name: biography, widget: text }
+      - { label: 展示设置, name: personPresentationSection, widget: section-heading, required: false, hint: "上传图片会保存到 public/images/people/。" }
+      - { label: 人物肖像, name: portrait, widget: image }
+      - label: 人物关键词
+        name: keywords
+        widget: list
+        field: { label: 关键词, name: keyword, widget: string }
+      - { label: 关联内容, name: personRelationsSection, widget: section-heading, required: false, hint: "填写项目与文章的稳定 ID。" }
+      - label: 关联项目 ID
+        name: projectIds
+        widget: list
+        required: false
+        field: { label: 项目 ID, name: projectId, widget: string }
+      - { label: 扩展资料, name: personExtensionsSection, widget: section-heading, required: false, hint: "时间线、图集、文章关联和来源可按需展开维护。" }
+      - label: 时间线
+        name: timeline
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 日期, name: date, widget: string }
+          - { label: 标题, name: title, widget: string }
+          - { label: 说明, name: description, widget: text }
+          - { label: 地点, name: location, widget: string, required: false }
+          - { label: 状态说明, name: status, widget: string, required: false }
+      - label: 图片集
+        name: gallery
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 图片 ID, name: id, widget: string }
+          - { label: 标题, name: title, widget: string }
+          - { label: 分类, name: category, widget: string }
+          - { label: 图片替代文本, name: alt, widget: string }
+          - { label: 图片类型, name: type, widget: select, options: [project, person, story, gallery, achievement] }
+          - { label: 图片文件, name: src, widget: image, required: false }
+          - { label: 图注, name: caption, widget: text, required: false }
+      - label: 关联文章 ID
+        name: storyIds
+        widget: list
+        required: false
+        field: { label: 文章 ID, name: storyId, widget: string }
+      - label: 资料来源
+        name: sources
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 来源 ID, name: id, widget: string }
+          - { label: 名称, name: label, widget: string }
+          - { label: 类型, name: type, widget: string, required: false }
+          - { label: 说明, name: description, widget: text }
+          - { label: 链接, name: url, widget: string, required: false }
+      - label: 主要事迹
+        name: deeds
+        widget: list
+        required: false
+        field: { label: 事迹, name: deed, widget: text }
+      - { label: 维护信息, name: personMaintenanceSection, widget: section-heading, required: false, hint: "状态决定内容是否在公开前台显示。" }
+      - { label: 发布状态, name: status, widget: select, options: [draft, review, published, archived], default: draft, hint: "draft 为编辑中；review 等待管理员审核；仅 published 会在公开前台展示。" }
+      - { label: 创建人, name: createdBy, widget: string }
+      - { label: 创建时间, name: createdAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 更新人, name: updatedBy, widget: string }
+      - { label: 更新时间, name: updatedAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 主来源说明, name: source, widget: string }
+
+  - name: stories
+    label: 文章
+    label_singular: 文章
+    folder: src/content/stories
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{date}} · {{title}} · {{status}}"
+    media_folder: "public/images/stories"
+    public_folder: "/images/stories"
+    fields:
+      - { label: 基础信息, name: storyBasicSection, widget: section-heading, required: false, hint: "标题、URL 标识、发布日期与文章分类。" }
+      - { label: 内容 ID, name: id, widget: string, hint: "用于项目关联；创建后请不要修改。" }
+      - { label: 标题, name: title, widget: string }
+      - { label: URL 标识, name: slug, widget: string, pattern: ["^[a-z0-9-]+$", "只能使用小写字母、数字和连字符"] }
+      - { label: 发布日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { label: 文章分类, name: category, widget: select, options: ["实践记录", "实地走访", "采访调研", "主题学习", "团队活动", "志愿服务", "成果汇报"] }
+      - { label: 正文内容, name: storyContentSection, widget: section-heading, required: false, hint: "每个区块使用 Markdown，可使用标题、段落、列表、引用和图片。" }
+      - { label: 简介, name: summary, widget: text }
+      - label: 正文段落
+        name: content
+        widget: list
+        collapsed: true
+        field:
+          label: Markdown 正文区块
+          name: paragraph
+          widget: markdown
+          buttons: [bold, italic, link, heading-one, heading-two, heading-three, quote, bulleted-list, numbered-list]
+          editor_components: [image]
+          modes: [raw, rich_text]
+          sanitize_preview: true
+      - { label: 展示设置, name: storyPresentationSection, widget: section-heading, required: false, hint: "上传图片会保存到 public/images/stories/。" }
+      - { label: 文章封面, name: coverImage, widget: image }
+      - { label: 关联项目 ID, name: projectId, widget: string }
+      - { label: 作者, name: author, widget: string }
+      - label: 图片集
+        name: gallery
+        widget: list
+        required: false
+        collapsed: true
+        fields:
+          - { label: 图片 ID, name: id, widget: string }
+          - { label: 标题, name: title, widget: string }
+          - { label: 分类, name: category, widget: string }
+          - { label: 图片替代文本, name: alt, widget: string }
+          - { label: 图片类型, name: type, widget: select, options: [project, person, story, gallery, achievement] }
+          - { label: 图片文件, name: src, widget: image, required: false }
+          - { label: 图注, name: caption, widget: text, required: false }
+      - { label: 发布设置, name: storyPublishingSection, widget: section-heading, required: false, hint: "标签用于搜索，状态决定公开范围。" }
+      - label: 标签
+        name: tags
+        widget: list
+        field: { label: 标签, name: tag, widget: string }
+      - { label: 首页推荐, name: featured, widget: boolean, default: false }
+      - { label: 发布状态, name: status, widget: select, options: [draft, review, published, archived], default: draft, hint: "draft 为编辑中；review 等待管理员审核；仅 published 会在公开前台展示。" }
+      - { label: 维护信息, name: storyMaintenanceSection, widget: section-heading, required: false, hint: "记录来源与最后维护时间。" }
+      - { label: 创建人, name: createdBy, widget: string }
+      - { label: 创建时间, name: createdAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 更新人, name: updatedBy, widget: string }
+      - { label: 更新时间, name: updatedAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 主来源说明, name: source, widget: string }
+
+  - name: achievements
+    label: 成果
+    label_singular: 成果
+    folder: src/content/achievements
+    create: true
+    extension: json
+    format: json
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{publishDate}} · {{title}} · {{status}}"
+    media_folder: "public/images/achievements"
+    public_folder: "/images/achievements"
+    fields:
+      - { label: 基础信息, name: achievementBasicSection, widget: section-heading, required: false, hint: "成果名称、URL 标识与成果类型。" }
+      - { label: 内容 ID, name: id, widget: string, hint: "用于项目关联；创建后请不要修改。" }
+      - { label: 标题, name: title, widget: string }
+      - { label: URL 标识, name: slug, widget: string, pattern: ["^[a-z0-9-]+$", "只能使用小写字母、数字和连字符"] }
+      - { label: 成果类型, name: type, widget: select, options: ["调研报告", "展示文稿", "视频作品", "宣传海报", "摄影作品", "实践心得", "电子手册"] }
+      - { label: 成果内容, name: achievementContentSection, widget: section-heading, required: false, hint: "填写简介并关联所属项目。" }
+      - { label: 简介, name: summary, widget: text }
+      - { label: 关联项目 ID, name: projectId, widget: string }
+      - label: 创作人员
+        name: creators
+        widget: list
+        field: { label: 姓名, name: creator, widget: string }
+      - { label: 展示与文件, name: achievementFilesSection, widget: section-heading, required: false, hint: "封面上传到 public/images/achievements/；资料文件上传到 public/files/achievements/。" }
+      - { label: 成果封面, name: coverImage, widget: image, required: false }
+      - { label: 发布日期, name: publishDate, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { label: 预览文件, name: previewUrl, widget: file, required: false, default: null, media_folder: "public/files/achievements", public_folder: "/files/achievements" }
+      - { label: 下载文件, name: fileUrl, widget: file, required: false, default: null, media_folder: "public/files/achievements", public_folder: "/files/achievements" }
+      - { label: 发布状态, name: status, widget: select, options: [draft, review, published, archived], default: draft, hint: "draft 为编辑中；review 等待管理员审核；仅 published 会在公开前台展示。" }
+      - { label: 资料状态, name: assetStatus, widget: select, options: ["整理中", "可预览", "已归档"], default: "整理中" }
+      - { label: 维护信息, name: achievementMaintenanceSection, widget: section-heading, required: false, hint: "记录来源与最后维护时间。" }
+      - { label: 创建人, name: createdBy, widget: string }
+      - { label: 创建时间, name: createdAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 更新人, name: updatedBy, widget: string }
+      - { label: 更新时间, name: updatedAt, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ" }
+      - { label: 主来源说明, name: source, widget: string }

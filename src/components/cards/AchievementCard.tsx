@@ -30,14 +30,15 @@ export function AchievementCard({ achievement, projectTitle }: AchievementCardPr
         alt={achievement.title + "封面占位"}
         className="aspect-[16/10] min-h-0"
         label={achievement.type}
+        src={achievement.coverImage}
         type="achievement"
       />
       <div className="mt-5 flex flex-wrap gap-2">
-        <Tag tone="red">
+        <Tag tone="red" value={achievement.type}>
           <TypeIcon aria-hidden="true" className="mr-1" size={14} />
           {achievement.type}
         </Tag>
-        <Tag tone="bronze">{achievement.status}</Tag>
+        <Tag tone="bronze">{achievement.assetStatus}</Tag>
       </div>
       <h2 className="mt-4 font-serif text-xl font-semibold text-ink">{achievement.title}</h2>
       <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted">{achievement.summary}</p>

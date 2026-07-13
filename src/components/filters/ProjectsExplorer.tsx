@@ -10,8 +10,8 @@ import {
   getAvailableLocations,
   getAvailableSemesters,
   getAvailableYears,
-  getProjectsByYear,
-} from "@/src/lib/data";
+  getProjectGroupsByYear,
+} from "@/src/lib/content";
 import { uniqueValues } from "@/src/lib/utils";
 
 type ProjectsExplorerProps = {
@@ -31,7 +31,7 @@ export function ProjectsExplorer({ projects }: ProjectsExplorerProps) {
   const themes = uniqueValues(projects.map((project) => project.theme)).sort();
   const locations = getAvailableLocations(projects);
   const filtered = filterProjects(projects, filters);
-  const groups = getProjectsByYear(filtered);
+  const groups = getProjectGroupsByYear(filtered);
   const hasActiveFilters = Object.values(filters).some(Boolean);
 
   return (

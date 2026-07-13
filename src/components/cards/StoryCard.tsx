@@ -19,6 +19,7 @@ export function StoryCard({ story, projectTitle, compact = false }: StoryCardPro
           alt={story.title + "封面占位"}
           className="aspect-[16/9] min-h-0"
           label={story.category}
+          src={story.coverImage}
           type="story"
         />
       ) : (
@@ -31,7 +32,10 @@ export function StoryCard({ story, projectTitle, compact = false }: StoryCardPro
       )}
       <div className={compact ? "min-w-0" : "mt-5"}>
         <div className="flex flex-wrap items-center gap-2">
-          <Tag tone="red">{story.category}</Tag>
+          <Tag tone="red" value={story.category}>{story.category}</Tag>
+          {!compact ? story.tags.map((tag) => (
+            <Tag key={tag} tone="bronze" value={tag}>{tag}</Tag>
+          )) : null}
           <span className="inline-flex items-center gap-1 text-xs text-muted">
             <CalendarDays aria-hidden="true" size={14} />
             {formatDate(story.date)}

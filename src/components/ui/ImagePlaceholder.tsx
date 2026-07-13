@@ -8,6 +8,7 @@ type ImagePlaceholderProps = {
   alt: string;
   label?: string;
   assetId?: string;
+  src?: string;
   className?: string;
 };
 
@@ -26,7 +27,8 @@ const sourceByType: Record<Exclude<PlaceholderImageType, "gallery">, string> = {
   achievement: "/images/placeholders/achievement-cover.svg",
 };
 
-function getSource(type: PlaceholderImageType, assetId?: string) {
+function getSource(type: PlaceholderImageType, assetId?: string, src?: string) {
+  if (src) return src;
   if (type !== "gallery") return sourceByType[type];
   const total = Array.from(assetId ?? "gallery").reduce(
     (value, character) => value + character.charCodeAt(0),
@@ -40,6 +42,7 @@ export function ImagePlaceholder({
   alt,
   label,
   assetId,
+  src,
   className,
 }: ImagePlaceholderProps) {
   return (
@@ -58,7 +61,7 @@ export function ImagePlaceholder({
         decoding="async"
         fill
         loading="lazy"
-        src={getSource(type, assetId)}
+        src={getSource(type, assetId, src)}
         unoptimized
       />
       <div className="absolute inset-0 bg-ink/5" />

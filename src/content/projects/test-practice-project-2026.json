@@ -1,0 +1,51 @@
+{
+  "id": "test-practice-project-2026",
+  "slug": "test-practice-project-2026",
+  "title": "2026测试社会实践项目",
+  "year": 2026,
+  "semester": "暑期社会实践",
+  "location": "南京",
+  "theme": "社会调研",
+  "summary": "这是用于测试CMS内容发布流程的示例项目。",
+  "background": "该项目不对应任何真实活动，仅用于验证 Git 驱动 CMS 的完整内容模型。",
+  "purpose": "验证项目创建、关联内容、时间线、来源、状态控制和年份归档是否正常工作。",
+  "coverImage": "/images/projects/test-practice-project-2026-cover.svg",
+  "slogan": "测试内容，验证长期维护链路。",
+  "featured": false,
+  "status": "published",
+  "tags": ["测试", "社会实践"],
+  "personIds": ["test-person-a"],
+  "storyIds": ["test-story-2026"],
+  "achievementIds": ["test-achievement-file"],
+  "timeline": [
+    {
+      "date": "2026-07-10",
+      "title": "测试项目创建",
+      "description": "建立项目基础字段并验证内容目录读取。"
+    },
+    {
+      "date": "2026-07-11",
+      "title": "关联内容验证",
+      "description": "关联测试人物、测试文章与测试成果。"
+    }
+  ],
+  "gallery": [],
+  "teamIds": [],
+  "sources": [
+    {
+      "id": "test-project-source",
+      "label": "CMS 测试资料说明",
+      "type": "测试数据",
+      "description": "匿名测试数据，不包含真实实践资料。"
+    }
+  ],
+  "createdBy": "CMS 测试账号",
+  "createdAt": "2026-07-10T09:00:00+08:00",
+  "updatedBy": "CMS 测试账号",
+  "updatedAt": "2026-07-11T18:00:00+08:00",
+  "source": "test-project-source",
+  "startDate": "2026-07-10",
+  "endDate": "2026-07-11",
+  "themeColor": "#8C1D1D",
+  "reflections": ["测试项目用于验证内容模型，不代表真实实践成果。"]
+}

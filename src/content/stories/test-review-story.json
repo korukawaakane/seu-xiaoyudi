@@ -1,0 +1,21 @@
+{
+  "id": "test-review-story",
+  "slug": "test-review-story",
+  "title": "测试审核中文章",
+  "date": "2026-07-12",
+  "category": "实践记录",
+  "summary": "本条匿名内容用于验证 review 状态不会进入公开前台。",
+  "content": ["# 审核中\n\n这是一条等待内容负责人审核的匿名测试文章。"],
+  "coverImage": "/images/stories/test-story-2026-cover.svg",
+  "projectId": "test-practice-project-2026",
+  "author": "CMS 测试账号",
+  "gallery": [],
+  "tags": ["测试", "审核"],
+  "featured": false,
+  "status": "review",
+  "createdBy": "CMS 测试账号",
+  "createdAt": "2026-07-12T09:00:00+08:00",
+  "updatedBy": "CMS 测试账号",
+  "updatedAt": "2026-07-12T09:00:00+08:00",
+  "source": "匿名审核状态测试"
+}

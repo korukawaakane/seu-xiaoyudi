@@ -5,7 +5,7 @@ import { AchievementCard } from "@/src/components/cards/AchievementCard";
 import { useQueryFilters } from "@/src/components/filters/useQueryFilters";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { FilterBar, FilterField } from "@/src/components/ui/FilterBar";
-import { filterAchievements, getAchievementTypes, getAvailableYears } from "@/src/lib/data";
+import { filterAchievements, getAchievementTypes, getAvailableYears } from "@/src/lib/content";
 
 type AchievementsExplorerProps = {
   achievements: Achievement[];

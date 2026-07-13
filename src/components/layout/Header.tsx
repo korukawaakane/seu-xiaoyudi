@@ -24,7 +24,7 @@ export function Header() {
           <BrandLogo compact />
         </Link>
 
-        <nav aria-label="主导航" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="主导航" className="hidden items-center gap-1 lg:flex">
           {navigationItems.map((item) => {
             const isActive =
               item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
@@ -47,7 +47,7 @@ export function Header() {
           aria-controls="mobile-navigation"
           aria-expanded={isOpen}
           aria-label={isOpen ? "关闭导航菜单" : "打开导航菜单"}
-          className="icon-button md:hidden"
+          className="icon-button lg:hidden"
           onClick={() => setIsOpen((value) => !value)}
           title={isOpen ? "关闭导航菜单" : "打开导航菜单"}
           type="button"

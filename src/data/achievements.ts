@@ -1,70 +1,9 @@
 import type { Achievement } from "@/src/types";
+import { loadCmsCollection } from "@/src/data/loadCmsCollection";
 
-export const achievements: Achievement[] = [
-  {
-    id: "achievement-report",
-    slug: "research-report-placeholder",
-    title: "调研成果示例一",
-    type: "调研报告",
-    summary: "用于展示调研报告类成果的占位简介。",
-    projectId: "project-summer-placeholder",
-    creators: ["制作人员占位甲", "制作人员占位乙"],
-    publishDate: "2026-07-15",
-    status: "整理中",
-  },
-  {
-    id: "achievement-slides",
-    slug: "presentation-placeholder",
-    title: "展示文稿示例",
-    type: "展示文稿",
-    summary: "用于展示汇报文稿类成果的占位简介。",
-    projectId: "project-summer-placeholder",
-    creators: ["制作人员占位丙"],
-    publishDate: "2026-07-16",
-    status: "整理中",
-  },
-  {
-    id: "achievement-video",
-    slug: "video-placeholder",
-    title: "视频作品示例",
-    type: "视频作品",
-    summary: "用于展示视频成果条目的占位简介。",
-    projectId: "project-autumn-placeholder",
-    creators: ["制作人员占位丁"],
-    publishDate: "2025-10-30",
-    status: "整理中",
-  },
-  {
-    id: "achievement-poster",
-    slug: "poster-placeholder",
-    title: "宣传海报示例",
-    type: "宣传海报",
-    summary: "用于展示海报成果条目的占位简介。",
-    projectId: "project-autumn-placeholder",
-    creators: ["制作人员占位戊"],
-    publishDate: "2025-10-31",
-    status: "整理中",
-  },
-  {
-    id: "achievement-photo",
-    slug: "photo-work-placeholder",
-    title: "摄影作品示例",
-    type: "摄影作品",
-    summary: "用于展示摄影成果条目的占位简介。",
-    projectId: "project-spring-placeholder",
-    creators: ["制作人员占位己"],
-    publishDate: "2024-04-06",
-    status: "整理中",
-  },
-  {
-    id: "achievement-handbook",
-    slug: "handbook-placeholder",
-    title: "电子手册示例",
-    type: "电子手册",
-    summary: "用于展示电子手册类成果的占位简介。",
-    projectId: "project-spring-placeholder",
-    creators: ["制作人员占位庚"],
-    publishDate: "2024-04-08",
-    status: "整理中",
-  },
-];
+const achievementModules = import.meta.glob("../content/achievements/*.json", {
+  eager: true,
+  import: "default",
+}) as Record<string, Achievement>;
+
+export const achievements: Achievement[] = loadCmsCollection(achievementModules);

@@ -1,0 +1,31 @@
+{
+  "id": "person-jia",
+  "slug": "person-jia",
+  "name": "人物甲",
+  "category": "访谈对象",
+  "years": "年份示例",
+  "birthplace": "籍贯示例",
+  "identity": "身份示例",
+  "summary": "人物甲是项目一中的匿名人物档案示例，用于展示跨项目、纪实与资料来源的关联。",
+  "biography": "本条为不对应真实人物的档案正文示例。后续录入正式资料时，可在保持字段结构不变的前提下补充经核实的生平、身份与实践关联说明。",
+  "portrait": "/images/placeholders/person-portrait.svg",
+  "keywords": ["观察", "记录", "传承"],
+  "projectIds": ["project-one"],
+  "timeline": [
+    {"date": "阶段示例", "title": "资料整理节点", "description": "用于展示人物档案可持续补充的时间线记录。"}
+  ],
+  "gallery": [
+    {"id": "person-jia-gallery-1", "title": "人物影像示例", "category": "人物档案", "alt": "人物甲影像占位图", "type": "person", "src": "/images/placeholders/person-portrait.svg"}
+  ],
+  "storyIds": ["story-example"],
+  "sources": [
+    {"id": "source-person-jia", "label": "人物资料说明示例", "type": "说明", "description": "匿名演示人物资料，不含真实个人信息。"}
+  ],
+  "deeds": ["主要事迹示例：在项目记录中提供观察与整理视角。"],
+  "status": "published",
+  "createdBy": "资料整理组",
+  "createdAt": "2026-07-03T10:00:00+08:00",
+  "updatedBy": "资料整理组",
+  "updatedAt": "2026-07-07T18:00:00+08:00",
+  "source": "source-person-jia"
+}

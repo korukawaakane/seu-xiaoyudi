@@ -1,0 +1,24 @@
+{
+  "id": "test-story-2026",
+  "slug": "test-story-2026",
+  "title": "测试实践纪实文章",
+  "date": "2026-07-11",
+  "category": "实践记录",
+  "summary": "测试CMS文章发布流程。",
+  "content": [
+    "# 一级标题\n\n这是用于验证 CMS 文章发布流程的正文内容。\n\n- 支持无序列表\n- 支持站内图片\n- 保持 Git 可读的纯文本格式",
+    "> 测试引用：所有内容在确认前应保持 `draft`，通过审核后再发布。\n\n![测试文章封面](/images/stories/test-story-2026-cover.svg)"
+  ],
+  "coverImage": "/images/stories/test-story-2026-cover.svg",
+  "projectId": "test-practice-project-2026",
+  "author": "CMS 测试账号",
+  "gallery": [],
+  "tags": ["测试", "社会实践"],
+  "featured": false,
+  "status": "published",
+  "createdBy": "CMS 测试账号",
+  "createdAt": "2026-07-11T09:00:00+08:00",
+  "updatedBy": "CMS 测试账号",
+  "updatedAt": "2026-07-11T18:00:00+08:00",
+  "source": "CMS 匿名测试文章"
+}

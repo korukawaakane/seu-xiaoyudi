@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">2026测试社会实践项目封面</title>
+  <desc id="desc">深红与米白配色的匿名测试项目封面</desc>
+  <rect width="1200" height="800" fill="#F7F0E4"/>
+  <path d="M0 0h1200v280c-218 77-424 45-596-41C415 160 211 153 0 250Z" fill="#8C1D1D"/>
+  <circle cx="966" cy="150" r="96" fill="#C9A56A" opacity=".9"/>
+  <path d="M244 145c0-50 45-96 45-96s45 46 45 96a45 45 0 1 1-90 0Z" fill="#F7F0E4"/>
+  <text x="116" y="475" fill="#542020" font-family="serif" font-size="68" font-weight="700">2026 测试社会实践项目</text>
+  <text x="120" y="548" fill="#725F50" font-family="sans-serif" font-size="30">CMS 内容发布流程 · 匿名测试资料</text>
+  <path d="M120 616h450" stroke="#8C1D1D" stroke-width="8"/>
+</svg>

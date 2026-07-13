@@ -12,9 +12,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const statusLabel =
     project.status === "published"
       ? "当前展示"
-      : project.status === "archived"
-        ? "已归档"
-        : "资料整理中";
+      : project.status === "review"
+        ? "等待审核"
+        : project.status === "archived"
+          ? "已归档"
+          : "资料整理中";
 
   return (
     <article className="card group">
@@ -22,12 +24,16 @@ export function ProjectCard({ project }: ProjectCardProps) {
         alt={project.title + "封面占位"}
         className="aspect-[16/10] min-h-0"
         label={project.year + "年 " + project.semester}
+        src={project.coverImage}
         type="project"
       />
       <div className="mt-5 flex flex-wrap gap-2">
         <Tag tone="red">{project.year}年</Tag>
         <Tag tone="bronze">{project.semester}</Tag>
         <Tag tone="light">{statusLabel}</Tag>
+        {project.tags.map((tag) => (
+          <Tag key={tag} tone="bronze" value={tag}>{tag}</Tag>
+        ))}
       </div>
       <h2 className="mt-4 font-serif text-xl font-semibold text-ink">{project.title}</h2>
       <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted">{project.summary}</p>

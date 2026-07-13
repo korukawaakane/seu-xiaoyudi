@@ -5,19 +5,20 @@ import { notFound } from "next/navigation";
 import { ProjectCard } from "@/src/components/cards/ProjectCard";
 import { StoryCard } from "@/src/components/cards/StoryCard";
 import { GalleryGrid } from "@/src/components/sections/GalleryGrid";
+import { StoryMarkdown } from "@/src/components/sections/StoryMarkdown";
 import { Breadcrumb } from "@/src/components/ui/Breadcrumb";
 import { Container } from "@/src/components/ui/Container";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { ImagePlaceholder } from "@/src/components/ui/ImagePlaceholder";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { Tag } from "@/src/components/ui/Tag";
-import { stories } from "@/src/data/stories";
 import {
   getProjectById,
   getProjectTitle,
   getRelatedStories,
+  getStories,
   getStoryBySlug,
-} from "@/src/lib/data";
+} from "@/src/lib/content";
 import { formatDate } from "@/src/lib/utils";
 
 type StoryDetailProps = {
@@ -25,23 +26,39 @@ type StoryDetailProps = {
 };
 
 export function generateStaticParams() {
-  return stories.map((story) => ({ slug: story.slug }));
+  return getStories().map((story) => ({ slug: story.slug }));
 }
 
 export async function generateMetadata({ params }: StoryDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const story = getStoryBySlug(slug);
   if (!story) return {};
+  const title = `${story.title}｜实践纪实｜SEU“小雨滴”社会实践团`;
 
   return {
-    title: story.title + "｜实践纪实",
+    title: { absolute: title },
     description: story.summary,
     alternates: { canonical: "/stories/" + story.slug },
     openGraph: {
-      title: story.title,
+      title,
       description: story.summary,
+      url: "/stories/" + story.slug,
       type: "article",
       publishedTime: story.date,
+      images: [
+        {
+          url: "/images/og-image.svg",
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: story.summary,
+      images: ["/images/og-image.svg"],
     },
   };
 }
@@ -66,7 +83,10 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
             ]}
           />
           <div className="max-w-4xl">
-            <Tag tone="red">{story.category}</Tag>
+            <div className="flex flex-wrap gap-2">
+              <Tag tone="red" value={story.category}>{story.category}</Tag>
+              {story.tags.map((tag) => <Tag key={tag} tone="bronze" value={tag}>{tag}</Tag>)}
+            </div>
             <h1 className="mt-5 font-serif text-3xl font-semibold leading-tight text-ink sm:text-5xl">{story.title}</h1>
             <p className="mt-5 max-w-3xl text-base leading-8 text-muted">{story.summary}</p>
             <dl className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted">
@@ -92,7 +112,7 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
 
       <section className="bg-paper py-8 sm:py-10">
         <Container>
-          <ImagePlaceholder alt={story.title + "封面区域占位"} className="aspect-[16/7] min-h-0" label="文章封面区域" type="story" />
+          <ImagePlaceholder alt={story.title + "封面区域占位"} className="aspect-[16/7] min-h-0" label="文章封面区域" src={story.coverImage} type="story" />
         </Container>
       </section>
 
@@ -100,7 +120,7 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
         <Container className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <article className="prose-panel">
             <h2 className="font-serif text-2xl font-semibold text-ink">纪实正文</h2>
-            {story.content.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <StoryMarkdown blocks={story.content} />
             <blockquote className="quote-panel mt-8">{story.summary}</blockquote>
           </article>
           <aside className="order-first border-b border-line pb-6 lg:order-none lg:border-l lg:border-b-0 lg:pl-6 lg:pb-0">

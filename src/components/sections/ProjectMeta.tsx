@@ -29,9 +29,11 @@ export function ProjectMeta({ project }: ProjectMetaProps) {
           <Tag tone={project.status === "published" ? "red" : "bronze"}>
             {project.status === "published"
               ? "当前展示"
-              : project.status === "archived"
-                ? "已归档"
-                : "草稿"}
+              : project.status === "review"
+                ? "等待审核"
+                : project.status === "archived"
+                  ? "已归档"
+                  : "草稿"}
           </Tag>
         </div>
       </div>

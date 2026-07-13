@@ -1,0 +1,20 @@
+{
+  "id": "test-achievement-file",
+  "slug": "test-achievement-file",
+  "title": "测试实践成果报告",
+  "type": "调研报告",
+  "summary": "测试成果管理流程。",
+  "projectId": "test-practice-project-2026",
+  "creators": ["CMS 测试账号"],
+  "publishDate": "2026-07-11",
+  "previewUrl": "/files/achievements/test-practice-achievement-report.txt",
+  "fileUrl": "/files/achievements/test-practice-achievement-report.txt",
+  "status": "published",
+  "assetStatus": "可预览",
+  "coverImage": "/images/achievements/test-practice-achievement-report-cover.svg",
+  "createdBy": "CMS 测试账号",
+  "createdAt": "2026-07-11T10:00:00+08:00",
+  "updatedBy": "CMS 测试账号",
+  "updatedAt": "2026-07-11T18:00:00+08:00",
+  "source": "CMS 匿名测试成果"
+}

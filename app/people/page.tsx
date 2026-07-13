@@ -2,15 +2,30 @@ import type { Metadata } from "next";
 import { PeopleExplorer } from "@/src/components/filters/PeopleExplorer";
 import { Container } from "@/src/components/ui/Container";
 import { PageHero } from "@/src/components/ui/PageHero";
-import { people } from "@/src/data/people";
-import { projects } from "@/src/data/projects";
+import { getPeople, getProjects } from "@/src/lib/content";
 
 export const metadata: Metadata = {
   title: "人物档案",
   description: "集中展示历届社会实践中收录的人物档案占位数据。",
+  alternates: { canonical: "/people" },
+  openGraph: {
+    title: "人物档案｜SEU“小雨滴”社会实践团",
+    description: "集中展示历届社会实践中收录的人物档案。",
+    url: "/people",
+    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "人物档案" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "人物档案｜SEU“小雨滴”社会实践团",
+    description: "集中展示历届社会实践中收录的人物档案。",
+    images: ["/images/og-image.svg"],
+  },
 };
 
 export default function PeoplePage() {
+  const people = getPeople();
+  const projects = getProjects();
+
   return (
     <>
       <PageHero

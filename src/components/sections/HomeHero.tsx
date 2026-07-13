@@ -70,6 +70,7 @@ export function HomeHero({ project }: HomeHeroProps) {
             alt={project.title + "封面占位"}
             className="aspect-[4/3] min-h-0"
             label="推荐项目封面"
+            src={project.coverImage}
             type="project"
           />
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">

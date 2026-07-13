@@ -14,7 +14,7 @@ export function MobileMenu({ isOpen, activePath, onClose }: MobileMenuProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="border-t border-line bg-paper md:hidden" id="mobile-navigation">
+    <div className="border-t border-line bg-paper lg:hidden" id="mobile-navigation">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <span className="text-sm font-semibold text-ink">站点导航</span>
         <button

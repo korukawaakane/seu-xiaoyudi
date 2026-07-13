@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">SEU“小雨滴”社会实践团</title>
+  <desc id="desc">深红色背景上的米白色水滴标记</desc>
+  <rect width="180" height="180" rx="38" fill="#8C1D1D"/>
+  <path d="M90 30C77 49 50 74 50 105a40 40 0 0 0 80 0c0-31-27-56-40-75Z" fill="#F7F0E4"/>
+  <path d="M76 113c3 8 10 13 19 14" fill="none" stroke="#8C1D1D" stroke-linecap="round" stroke-width="7"/>
+  <circle cx="127" cy="48" r="8" fill="#C89D61"/>
+</svg>

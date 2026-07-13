@@ -6,17 +6,32 @@ import { Container } from "@/src/components/ui/Container";
 import { PageHero } from "@/src/components/ui/PageHero";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { Tag } from "@/src/components/ui/Tag";
-import { aboutContent } from "@/src/data/content";
 import { siteConfig } from "@/src/config/site";
+import { getAboutContent } from "@/src/lib/content";
 
 export const metadata: Metadata = {
   title: "关于我们",
   description: siteConfig.teamName + "社会实践数字档案与成果展示平台介绍。",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "关于我们｜SEU“小雨滴”社会实践团",
+    description: siteConfig.teamName + "社会实践数字档案与成果展示平台介绍。",
+    url: "/about",
+    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "关于 SEU“小雨滴”社会实践团" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "关于我们｜SEU“小雨滴”社会实践团",
+    description: siteConfig.teamName + "社会实践数字档案与成果展示平台介绍。",
+    images: ["/images/og-image.svg"],
+  },
 };
 
 const valueIcons = [Droplets, BookOpenText, Archive, Layers3];
 
 export default function AboutPage() {
+  const aboutContent = getAboutContent();
+
   return (
     <>
       <PageHero

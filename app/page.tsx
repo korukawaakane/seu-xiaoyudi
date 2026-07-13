@@ -11,34 +11,46 @@ import { Container } from "@/src/components/ui/Container";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { StatCard } from "@/src/components/ui/StatCard";
-import { homeContent } from "@/src/data/content";
 import { platformPrinciples, siteConfig } from "@/src/config/site";
-import { achievements } from "@/src/data/achievements";
-import { projects } from "@/src/data/projects";
 import {
   getAchievementsByProject,
+  getAchievements,
   getArchiveStats,
   getFeaturedPeople,
   getFeaturedProject,
+  getHomeContent,
   getLatestStories,
+  getProjects,
   getProjectTitle,
-  getSortedProjects,
-} from "@/src/lib/data";
+} from "@/src/lib/content";
 
 export const metadata: Metadata = {
   title: "首页",
   description: siteConfig.description,
   alternates: { canonical: "/" },
+  openGraph: {
+    title: siteConfig.siteName,
+    description: siteConfig.description,
+    url: "/",
+    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: siteConfig.siteName }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.siteName,
+    description: siteConfig.description,
+    images: ["/images/og-image.svg"],
+  },
 };
 
 export default function Home() {
+  const homeContent = getHomeContent();
   const featuredProject = getFeaturedProject();
   const featuredPeople = featuredProject ? getFeaturedPeople(featuredProject.id) : [];
   const latestStories = getLatestStories(4);
   const projectAchievements = featuredProject
     ? getAchievementsByProject(featuredProject.id)
-    : achievements.slice(0, 3);
-  const recentProjects = getSortedProjects(projects).slice(0, 3);
+    : getAchievements().slice(0, 3);
+  const recentProjects = getProjects().slice(0, 3);
   const archiveStats = getArchiveStats();
 
   return (

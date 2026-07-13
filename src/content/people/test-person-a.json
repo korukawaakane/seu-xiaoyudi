@@ -1,0 +1,38 @@
+{
+  "id": "test-person-a",
+  "slug": "test-person-a",
+  "name": "测试人物A",
+  "category": "测试人物",
+  "years": "2026",
+  "birthplace": "匿名地点",
+  "identity": "测试资料角色",
+  "summary": "这是用于测试人物档案展示的数据。",
+  "biography": "本条数据仅用于 CMS 内容模型和前端人物页读取验证，不对应任何真实个人。",
+  "portrait": "/images/people/test-person-a-portrait.svg",
+  "keywords": ["测试", "实践"],
+  "projectIds": ["test-practice-project-2026"],
+  "timeline": [
+    {
+      "date": "2026-07-10",
+      "title": "人物档案创建",
+      "description": "测试人物资料已通过 JSON 内容目录加入前台数据链路。"
+    }
+  ],
+  "gallery": [],
+  "storyIds": ["test-story-2026"],
+  "sources": [
+    {
+      "id": "test-person-source",
+      "label": "测试人物资料说明",
+      "type": "测试数据",
+      "description": "匿名测试数据，不含个人身份信息。"
+    }
+  ],
+  "deeds": ["验证人物与项目、文章之间的 ID 关联。"],
+  "status": "published",
+  "createdBy": "CMS 测试账号",
+  "createdAt": "2026-07-10T10:00:00+08:00",
+  "updatedBy": "CMS 测试账号",
+  "updatedAt": "2026-07-11T18:00:00+08:00",
+  "source": "test-person-source"
+}

@@ -31,6 +31,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+/.env.local
 
 # vercel
 .vercel
@@ -38,6 +40,11 @@ yarn-error.log*
 # typescript
 next-env.d.ts
 /dist/
+/.output/
 /.wrangler/
 /outputs/
 /work/
+
+# Keep the tracked Vite helper while ignoring any generated build files.
+/build/*
+!/build/sites-vite-plugin.ts

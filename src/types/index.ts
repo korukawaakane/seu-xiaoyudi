@@ -1,6 +1,10 @@
+export type Year = number;
+
 export type Semester = "春季学期" | "暑期社会实践" | "秋季学期";
 
-export type ProjectStatus = "draft" | "published" | "archived";
+export type ContentStatus = "draft" | "review" | "published" | "archived";
+
+export type ProjectStatus = ContentStatus;
 
 export type PlaceholderImageType =
   | "project"
@@ -26,6 +30,8 @@ export type GalleryImage = {
   category: string;
   alt: string;
   type: PlaceholderImageType;
+  src?: string;
+  caption?: string;
 };
 
 export type TimelineItem = {
@@ -42,64 +48,77 @@ export type TeamMember = {
   name: string;
   role: string;
   description: string;
+  projectIds: string[];
 };
 
 export type SourceItem = {
+  id: string;
   label: string;
   type?: string;
   description: string;
   url?: string;
 };
 
-export type Project = {
+export type ContentMetadata = {
+  createdBy: string;
+  createdAt: string;
+  updatedBy: string;
+  updatedAt: string;
+  source: string;
+};
+
+export type Project = ContentMetadata & {
   id: string;
   slug: string;
   title: string;
-  year: number;
+  year: Year;
   semester: Semester;
-  startDate?: string;
-  endDate?: string;
   location: string;
   theme: string;
   summary: string;
-  background?: string;
-  purpose?: string;
-  slogan?: string;
-  coverImage?: string;
+  background: string;
+  purpose: string;
+  coverImage: string;
+  slogan: string;
   featured: boolean;
   status: ProjectStatus;
-  themeColor?: string;
+  tags: string[];
   personIds: string[];
   storyIds: string[];
   achievementIds: string[];
   timeline: TimelineItem[];
   gallery: GalleryImage[];
-  team: TeamMember[];
+  teamIds: string[];
+  sources: SourceItem[];
+  startDate?: string;
+  endDate?: string;
+  themeColor?: string;
   reflections?: string[];
-  sources?: SourceItem[];
 };
 
-export type Person = {
+export type Person = ContentMetadata & {
   id: string;
   slug: string;
   name: string;
-  years: string;
   category: string;
-  summary: string;
-  biography: string;
-  portrait?: string;
+  years: string;
   birthplace: string;
   identity: string;
+  summary: string;
+  biography: string;
+  portrait: string;
   keywords: string[];
   projectIds: string[];
   timeline: TimelineItem[];
-  deeds: string[];
   gallery: GalleryImage[];
   storyIds: string[];
-  sources?: SourceItem[];
+  sources: SourceItem[];
+  deeds: string[];
+  status: ContentStatus;
 };
 
 export type StoryCategory =
+  | "实践记录"
   | "实地走访"
   | "采访调研"
   | "主题学习"
@@ -107,19 +126,21 @@ export type StoryCategory =
   | "志愿服务"
   | "成果汇报";
 
-export type Story = {
+export type Story = ContentMetadata & {
   id: string;
   slug: string;
   title: string;
   date: string;
   category: StoryCategory;
   summary: string;
-  coverImage?: string;
+  content: string[];
+  coverImage: string;
   projectId: string;
   author: string;
-  content: string[];
   gallery: GalleryImage[];
+  tags: string[];
   featured: boolean;
+  status: ContentStatus;
 };
 
 export type AchievementType =
@@ -131,9 +152,9 @@ export type AchievementType =
   | "实践心得"
   | "电子手册";
 
-export type AchievementStatus = "整理中" | "可预览" | "已归档";
+export type AchievementAssetStatus = "整理中" | "可预览" | "已归档";
 
-export type Achievement = {
+export type Achievement = ContentMetadata & {
   id: string;
   slug: string;
   title: string;
@@ -142,8 +163,9 @@ export type Achievement = {
   projectId: string;
   creators: string[];
   publishDate: string;
+  previewUrl: string | null;
+  fileUrl: string | null;
+  status: ContentStatus;
+  assetStatus: AchievementAssetStatus;
   coverImage?: string;
-  fileUrl?: string;
-  previewUrl?: string;
-  status: AchievementStatus;
 };

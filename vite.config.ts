@@ -1,5 +1,6 @@
 import vinext from "vinext";
 import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/postcss";
 import hostingConfig from "./.openai/hosting.json";
 import { sites } from "./build/sites-vite-plugin";
 
@@ -34,6 +35,21 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async () => {
+  const useVercelAdapter =
+    process.env.VERCEL === "1" || process.env.NITRO_PRESET === "vercel";
+
+  if (useVercelAdapter) {
+    const { nitro } = await import("nitro/vite");
+    return {
+      css: {
+        postcss: {
+          plugins: [tailwindcss()],
+        },
+      },
+      plugins: [vinext(), nitro()],
+    };
+  }
+
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= "false";

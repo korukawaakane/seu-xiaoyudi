@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">测试实践纪实文章配图</title>
+  <desc id="desc">用于 CMS Markdown 测试的抽象实践记录图片</desc>
+  <rect width="1200" height="675" fill="#F7F0E4"/>
+  <path d="M0 455c203-150 370-63 549-139 151-64 283-202 651-126v485H0Z" fill="#8C1D1D"/>
+  <path d="M0 526c191-98 350-34 530-96 148-51 279-166 670-93v338H0Z" fill="#A67C52"/>
+  <path d="M816 95c0-55 51-111 51-111s51 56 51 111a51 51 0 1 1-102 0Z" fill="#8C1D1D"/>
+  <text x="96" y="170" fill="#542020" font-family="serif" font-size="56" font-weight="700">测试实践纪实文章</text>
+  <text x="100" y="230" fill="#725F50" font-family="sans-serif" font-size="28">Markdown · 列表 · 引用 · 图片</text>
+</svg>

@@ -66,6 +66,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
                 assetId={image.id}
                 className="aspect-[4/3] min-h-0"
                 label={image.title}
+                src={image.src}
                 type={image.type}
               />
             </button>
@@ -111,6 +112,7 @@ export function GalleryGrid({ images }: GalleryGridProps) {
               assetId={activeImage.id}
               className="lightbox-image aspect-[16/10] min-h-0 border-white/20"
               label={activeImage.title}
+              src={activeImage.src}
               type={activeImage.type}
             />
             {images.length > 1 ? (

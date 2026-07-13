@@ -1,18 +1,61 @@
 import type { MetadataRoute } from "next";
-import { people } from "@/src/data/people";
-import { projects } from "@/src/data/projects";
-import { stories } from "@/src/data/stories";
+import { getAvailableYears, getPeople, getProjects, getStories } from "@/src/lib/content";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/projects", "/people", "/stories", "/achievements", "/about"];
-  const projectRoutes = projects.map((project) => `/projects/${project.slug}`);
-  const personRoutes = people.map((person) => `/people/${person.slug}`);
-  const storyRoutes = stories.map((story) => `/stories/${story.slug}`);
+  const projects = getProjects();
+  const people = getPeople();
+  const stories = getStories();
+  const years = getAvailableYears(projects);
+  const staticRoutes = [
+    { route: "", priority: 1 },
+    { route: "/projects", priority: 0.9 },
+    { route: "/years", priority: 0.8 },
+    { route: "/people", priority: 0.8 },
+    { route: "/stories", priority: 0.8 },
+    { route: "/achievements", priority: 0.8 },
+    { route: "/about", priority: 0.6 },
+    { route: "/search", priority: 0.4 },
+  ];
 
-  return [...staticRoutes, ...projectRoutes, ...personRoutes, ...storyRoutes].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-  }));
+  return [
+    ...staticRoutes.map(({ route, priority }) => ({
+      url: `${baseUrl}${route}`,
+      changeFrequency: "weekly" as const,
+      priority,
+    })),
+    ...years.map((year) => {
+      const yearProjects = projects.filter((project) => project.year === year);
+      const lastModified = yearProjects
+        .map((project) => project.updatedAt)
+        .sort()
+        .at(-1);
+
+      return {
+        url: `${baseUrl}/years/${year}`,
+        lastModified: lastModified ? new Date(lastModified) : undefined,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      };
+    }),
+    ...projects.map((project) => ({
+      url: `${baseUrl}/projects/${project.slug}`,
+      lastModified: new Date(project.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    ...people.map((person) => ({
+      url: `${baseUrl}/people/${person.slug}`,
+      lastModified: new Date(person.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+    ...stories.map((story) => ({
+      url: `${baseUrl}/stories/${story.slug}`,
+      lastModified: new Date(story.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  ];
 }

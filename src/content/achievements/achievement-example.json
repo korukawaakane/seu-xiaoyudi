@@ -1,0 +1,20 @@
+{
+  "id": "achievement-example",
+  "slug": "achievement-example",
+  "title": "成果示例",
+  "type": "调研报告",
+  "summary": "成果示例用于展示项目成果的归档状态、制作人员和预览文件字段。",
+  "projectId": "project-one",
+  "creators": ["制作人员示例"],
+  "publishDate": "2026-07-07",
+  "previewUrl": null,
+  "fileUrl": null,
+  "status": "published",
+  "assetStatus": "整理中",
+  "coverImage": "/images/placeholders/achievement-cover.svg",
+  "createdBy": "资料整理组",
+  "createdAt": "2026-07-07T10:00:00+08:00",
+  "updatedBy": "资料整理组",
+  "updatedAt": "2026-07-07T18:00:00+08:00",
+  "source": "匿名成果资料演示"
+}

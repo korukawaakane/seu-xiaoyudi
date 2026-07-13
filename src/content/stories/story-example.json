@@ -1,0 +1,26 @@
+{
+  "id": "story-example",
+  "slug": "story-example",
+  "title": "纪实示例",
+  "date": "2026-07-03",
+  "category": "实地走访",
+  "summary": "纪实示例展示一篇文章如何关联项目、人物、图片组与标签，而不使用任何真实人物或活动信息。",
+  "content": [
+    "这是纪实正文的第一段演示内容，用于验证文章详情页的段落结构和项目关联。",
+    "后续替换为真实素材时，可继续使用当前数据字段与页面模板，无需为单篇文章单独开发页面。"
+  ],
+  "coverImage": "/images/placeholders/story-cover.svg",
+  "projectId": "project-one",
+  "author": "整理人员示例",
+  "gallery": [
+    {"id": "story-example-gallery-1", "title": "走访影像示例", "category": "实地走访", "alt": "纪实示例走访影像占位图", "type": "story", "src": "/images/placeholders/gallery-image-3.svg"}
+  ],
+  "tags": ["走访", "纪实", "演示数据"],
+  "featured": true,
+  "status": "published",
+  "createdBy": "资料整理组",
+  "createdAt": "2026-07-03T12:00:00+08:00",
+  "updatedBy": "资料整理组",
+  "updatedAt": "2026-07-07T18:00:00+08:00",
+  "source": "匿名纪实资料演示"
+}

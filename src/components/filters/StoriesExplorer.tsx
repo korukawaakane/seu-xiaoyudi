@@ -5,7 +5,7 @@ import { StoryCard } from "@/src/components/cards/StoryCard";
 import { useQueryFilters } from "@/src/components/filters/useQueryFilters";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { FilterBar, FilterField } from "@/src/components/ui/FilterBar";
-import { filterStories, getAvailableYears, getFeaturedStory, getStoryCategories } from "@/src/lib/data";
+import { filterStories, getAvailableYears, getFeaturedStory, getStoryCategories } from "@/src/lib/content";
 
 type StoriesExplorerProps = {
   stories: Story[];
