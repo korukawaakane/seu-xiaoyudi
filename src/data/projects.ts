@@ -1,5 +1,5 @@
 import type { Project, TeamMember } from "@/src/types";
-import { loadCmsCollection } from "@/src/data/loadCmsCollection";
+import { generatedProjects } from "@/src/data/generated-content";
 
 export const teamMembers: TeamMember[] = [
   {
@@ -18,9 +18,4 @@ export const teamMembers: TeamMember[] = [
   },
 ];
 
-const projectModules = import.meta.glob("../content/projects/*.json", {
-  eager: true,
-  import: "default",
-}) as Record<string, Project>;
-
-export const projects: Project[] = loadCmsCollection(projectModules);
+export const projects: Project[] = generatedProjects;

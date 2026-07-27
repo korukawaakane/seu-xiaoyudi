@@ -4,7 +4,7 @@ import { pathToFileURL } from "node:url";
 import cloudbase from "@cloudbase/node-sdk";
 
 type ContentCollection = "projects" | "people" | "stories" | "achievements";
-type ContentDocument = Record<string, any> & { id: string };
+type ContentDocument = Record<string, unknown> & { id: string };
 type ContentFile = { fileName: string; document: ContentDocument };
 
 const contentRoot = path.resolve(process.cwd(), "src/content");

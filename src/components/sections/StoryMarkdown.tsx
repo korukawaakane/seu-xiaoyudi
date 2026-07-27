@@ -28,7 +28,7 @@ const components: Components = {
     </a>
   ),
   img: ({ src, alt }) => {
-    if (!src?.startsWith("/")) return null;
+    if (typeof src !== "string" || !src.startsWith("/")) return null;
 
     return (
       <Image

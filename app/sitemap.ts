@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getAvailableYears, getPeople, getProjects, getStories } from "@/src/lib/content";
 
+export const dynamic = "force-static";
+
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -402,25 +402,16 @@ export async function getSiteStatistics(): Promise<SiteStatistics> {
   };
 }
 
-export async function getSearchResults({ query, tag }: SearchFilters = {}): Promise<SearchResult[]> {
-  const normalizedQuery = query?.trim();
-  const normalizedTag = tag?.trim();
-
-  if (!normalizedQuery && !normalizedTag) return [];
-
+export async function getSearchIndex(): Promise<SearchResult[]> {
   const [publicProjects, publicPeople, publicStories, publicAchievements] = await Promise.all([
     getProjects(),
     getPeople(),
     getStories(),
     getAchievements(),
   ]);
-  const matches = (title: string, summary: string, tags: string[]) =>
-    stringMatches([title, summary, ...tags].join(" "), normalizedQuery) &&
-    tagMatches(tags, normalizedTag);
 
   return [
     ...publicProjects
-      .filter((project) => matches(project.title, project.summary, project.tags))
       .map<SearchResult>((project) => ({
         id: project.id,
         type: "project",
@@ -431,7 +422,6 @@ export async function getSearchResults({ query, tag }: SearchFilters = {}): Prom
         tags: project.tags,
       })),
     ...publicPeople
-      .filter((person) => matches(person.name, person.summary, person.keywords))
       .map<SearchResult>((person) => ({
         id: person.id,
         type: "person",
@@ -442,7 +432,6 @@ export async function getSearchResults({ query, tag }: SearchFilters = {}): Prom
         tags: person.keywords,
       })),
     ...publicStories
-      .filter((story) => matches(story.title, story.summary, [story.category, ...story.tags]))
       .map<SearchResult>((story) => ({
         id: story.id,
         type: "story",
@@ -453,7 +442,6 @@ export async function getSearchResults({ query, tag }: SearchFilters = {}): Prom
         tags: [story.category, ...story.tags],
       })),
     ...publicAchievements
-      .filter((achievement) => matches(achievement.title, achievement.summary, [achievement.type]))
       .map<SearchResult>((achievement) => ({
         id: achievement.id,
         type: "achievement",
@@ -464,6 +452,21 @@ export async function getSearchResults({ query, tag }: SearchFilters = {}): Prom
         tags: [achievement.type],
       })),
   ];
+}
+
+export async function getSearchResults({ query, tag }: SearchFilters = {}): Promise<SearchResult[]> {
+  const normalizedQuery = query?.trim();
+  const normalizedTag = tag?.trim();
+
+  if (!normalizedQuery && !normalizedTag) return [];
+
+  return (await getSearchIndex()).filter(
+    (result) =>
+      stringMatches(
+        [result.title, result.summary, ...result.tags].join(" "),
+        normalizedQuery,
+      ) && tagMatches(result.tags, normalizedTag),
+  );
 }
 
 export async function getArchiveStats() {

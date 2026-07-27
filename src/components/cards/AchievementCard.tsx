@@ -21,8 +21,8 @@ const achievementIcons: Record<AchievementType, typeof FileText> = {
 
 export function AchievementCard({ achievement, projectTitle }: AchievementCardProps) {
   const TypeIcon = achievementIcons[achievement.type];
-  const hasPreview = Boolean(achievement.previewUrl);
-  const hasFile = Boolean(achievement.fileUrl);
+  const previewUrl = achievement.previewUrl;
+  const fileUrl = achievement.fileUrl;
 
   return (
     <article className="card group">
@@ -57,8 +57,8 @@ export function AchievementCard({ achievement, projectTitle }: AchievementCardPr
         </div>
       </dl>
       <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-        {hasPreview ? (
-          <a className="btn-secondary" href={achievement.previewUrl} rel="noreferrer" target="_blank">
+        {previewUrl ? (
+          <a className="btn-secondary" href={previewUrl} rel="noreferrer" target="_blank">
             <Eye aria-hidden="true" size={16} />
             预览资料
           </a>
@@ -68,8 +68,8 @@ export function AchievementCard({ achievement, projectTitle }: AchievementCardPr
             资料整理中
           </span>
         )}
-        {hasFile ? (
-          <a className="btn-secondary" href={achievement.fileUrl} rel="noreferrer" target="_blank">
+        {fileUrl ? (
+          <a className="btn-secondary" href={fileUrl} rel="noreferrer" target="_blank">
             <Download aria-hidden="true" size={16} />
             下载资料
           </a>

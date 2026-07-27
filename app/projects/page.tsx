@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { ProjectsExplorer } from "@/src/components/filters/ProjectsExplorer";
 import { Container } from "@/src/components/ui/Container";
 import { PageHero } from "@/src/components/ui/PageHero";
@@ -35,7 +36,9 @@ export default async function ProjectsPage() {
       />
       <section className="section-space bg-paper">
         <Container>
-          <ProjectsExplorer projects={projects} />
+          <Suspense fallback={<div aria-hidden="true" className="min-h-96" />}>
+            <ProjectsExplorer projects={projects} />
+          </Suspense>
         </Container>
       </section>
     </>

@@ -1,9 +1,4 @@
 import type { Achievement } from "@/src/types";
-import { loadCmsCollection } from "@/src/data/loadCmsCollection";
+import { generatedAchievements } from "@/src/data/generated-content";
 
-const achievementModules = import.meta.glob("../content/achievements/*.json", {
-  eager: true,
-  import: "default",
-}) as Record<string, Achievement>;
-
-export const achievements: Achievement[] = loadCmsCollection(achievementModules);
+export const achievements: Achievement[] = generatedAchievements;

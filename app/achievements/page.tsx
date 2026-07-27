@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { AchievementsExplorer } from "@/src/components/filters/AchievementsExplorer";
 import { Container } from "@/src/components/ui/Container";
 import { PageHero } from "@/src/components/ui/PageHero";
@@ -42,7 +43,9 @@ export default async function AchievementsPage() {
       />
       <section className="section-space bg-paper">
         <Container>
-          <AchievementsExplorer achievements={achievements} projects={projects} />
+          <Suspense fallback={<div aria-hidden="true" className="min-h-96" />}>
+            <AchievementsExplorer achievements={achievements} projects={projects} />
+          </Suspense>
         </Container>
       </section>
     </>
