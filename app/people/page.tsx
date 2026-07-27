@@ -22,9 +22,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PeoplePage() {
-  const people = getPeople();
-  const projects = getProjects();
+export default async function PeoplePage() {
+  const [people, projects] = await Promise.all([getPeople(), getProjects()]);
 
   return (
     <>

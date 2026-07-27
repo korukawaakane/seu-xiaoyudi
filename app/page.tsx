@@ -21,7 +21,6 @@ import {
   getHomeContent,
   getLatestStories,
   getProjects,
-  getProjectTitle,
 } from "@/src/lib/content";
 
 export const metadata: Metadata = {
@@ -42,16 +41,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
   const homeContent = getHomeContent();
-  const featuredProject = getFeaturedProject();
-  const featuredPeople = featuredProject ? getFeaturedPeople(featuredProject.id) : [];
-  const latestStories = getLatestStories(4);
-  const projectAchievements = featuredProject
-    ? getAchievementsByProject(featuredProject.id)
-    : getAchievements().slice(0, 3);
-  const recentProjects = getProjects().slice(0, 3);
-  const archiveStats = getArchiveStats();
+  const [featuredProject, latestStories, allProjects, fallbackAchievements, archiveStats] = await Promise.all([
+    getFeaturedProject(),
+    getLatestStories(4),
+    getProjects(),
+    getAchievements(),
+    getArchiveStats(),
+  ]);
+  const [featuredPeople, projectAchievements] = featuredProject
+    ? await Promise.all([
+        getFeaturedPeople(featuredProject.id),
+        getAchievementsByProject(featuredProject.id),
+      ])
+    : [[], fallbackAchievements.slice(0, 3)];
+  const recentProjects = allProjects.slice(0, 3);
+  const projectTitles = new Map(allProjects.map((project) => [project.id, project.title]));
 
   return (
     <>
@@ -116,7 +122,7 @@ export default function Home() {
           {latestStories.length ? (
             <div className="grid gap-1">
               {latestStories.map((story) => (
-                <StoryCard compact key={story.id} projectTitle={getProjectTitle(story.projectId)} story={story} />
+                <StoryCard compact key={story.id} projectTitle={projectTitles.get(story.projectId) ?? "未关联项目"} story={story} />
               ))}
             </div>
           ) : (
@@ -168,7 +174,7 @@ export default function Home() {
               <AchievementCard
                 achievement={achievement}
                 key={achievement.id}
-                projectTitle={getProjectTitle(achievement.projectId)}
+                projectTitle={projectTitles.get(achievement.projectId) ?? "未关联项目"}
               />
             ))}
           </div>

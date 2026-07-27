@@ -29,9 +29,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AchievementsPage() {
-  const achievements = getAchievements();
-  const projects = getProjects();
+export default async function AchievementsPage() {
+  const [achievements, projects] = await Promise.all([getAchievements(), getProjects()]);
 
   return (
     <>

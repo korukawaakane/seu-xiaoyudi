@@ -3,10 +3,12 @@ import { getAvailableYears, getPeople, getProjects, getStories } from "@/src/lib
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const projects = getProjects();
-  const people = getPeople();
-  const stories = getStories();
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [projects, people, stories] = await Promise.all([
+    getProjects(),
+    getPeople(),
+    getStories(),
+  ]);
   const years = getAvailableYears(projects);
   const staticRoutes = [
     { route: "", priority: 1 },

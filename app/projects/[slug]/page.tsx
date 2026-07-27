@@ -21,7 +21,6 @@ import {
   getPeopleByProject,
   getProjectAccent,
   getProjectBySlug,
-  getProjectTitle,
   getProjects,
   getStoriesByProject,
   getTeamMembersByProject,
@@ -41,13 +40,13 @@ const projectAnchors = [
   { id: "team", label: "团队信息" },
 ];
 
-export function generateStaticParams() {
-  return getProjects().map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+  return (await getProjects()).map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({ params }: ProjectDetailProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return {};
   const title = `${project.title}｜SEU“小雨滴”社会实践团`;
 
@@ -80,13 +79,15 @@ export async function generateMetadata({ params }: ProjectDetailProps): Promise<
 
 export default async function ProjectDetailPage({ params }: ProjectDetailProps) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const relatedPeople = getPeopleByProject(project.id);
-  const relatedStories = getStoriesByProject(project.id);
-  const relatedAchievements = getAchievementsByProject(project.id);
-  const teamMembers = getTeamMembersByProject(project.id);
+  const [relatedPeople, relatedStories, relatedAchievements, teamMembers] = await Promise.all([
+    getPeopleByProject(project.id),
+    getStoriesByProject(project.id),
+    getAchievementsByProject(project.id),
+    getTeamMembersByProject(project.id),
+  ]);
   const statusLabel =
     project.status === "published"
       ? "当前展示"
@@ -184,7 +185,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
           <SectionHeading title="实践纪实" description="相关文章通过项目关联自动读取。" />
           {relatedStories.length ? (
             <div className="grid gap-1">
-              {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={getProjectTitle(story.projectId)} story={story} />)}
+              {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={project.title} story={story} />)}
             </div>
           ) : (
             <EmptyState title="实践纪实待补充" description="新增并关联纪实文章后，该区域会自动更新。" />

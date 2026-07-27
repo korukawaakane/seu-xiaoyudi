@@ -4,7 +4,7 @@ import { ArrowRight, CalendarDays } from "lucide-react";
 import { Container } from "@/src/components/ui/Container";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { PageHero } from "@/src/components/ui/PageHero";
-import { getAvailableYears, getYearArchive } from "@/src/lib/content";
+import { getAvailableYears, getProjects, getYearArchive } from "@/src/lib/content";
 
 export const metadata: Metadata = {
   title: "年份归档",
@@ -12,8 +12,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/years" },
 };
 
-export default function YearsPage() {
-  const years = getAvailableYears();
+export default async function YearsPage() {
+  const years = getAvailableYears(await getProjects());
+  const archives = await Promise.all(years.map((year) => getYearArchive(year)));
 
   return (
     <>
@@ -27,8 +28,8 @@ export default function YearsPage() {
         <Container>
           {years.length ? (
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {years.map((year) => {
-                const archive = getYearArchive(year);
+              {years.map((year, index) => {
+                const archive = archives[index];
                 const itemCount =
                   archive.projects.length +
                   archive.people.length +

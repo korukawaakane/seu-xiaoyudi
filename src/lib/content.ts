@@ -3,6 +3,12 @@ import { people } from "@/src/data/people";
 import { projects, teamMembers } from "@/src/data/projects";
 import { stories } from "@/src/data/stories";
 import { aboutContent, homeContent } from "@/src/data/content";
+import {
+  getCloudAchievements,
+  getCloudPeople,
+  getCloudProjects,
+  getCloudStories,
+} from "@/src/lib/cloudbase";
 import type {
   Achievement,
   AchievementType,
@@ -103,6 +109,14 @@ const stringMatches = (value: string, query?: string) =>
 const tagMatches = (tags: string[], tag?: string) =>
   !tag || tags.some((item) => item.toLocaleLowerCase() === tag.trim().toLocaleLowerCase());
 
+async function getCloudOrLocal<T>(loadCloud: () => Promise<T[]>, local: T[]): Promise<T[]> {
+  try {
+    return await loadCloud();
+  } catch {
+    return local;
+  }
+}
+
 export function getHomeContent() {
   return homeContent;
 }
@@ -111,48 +125,52 @@ export function getAboutContent() {
   return aboutContent;
 }
 
-export function getProjects(): Project[] {
-  return getSortedProjects(projects.filter(isPublished));
+export async function getProjects(): Promise<Project[]> {
+  const items = await getCloudOrLocal(getCloudProjects, projects);
+  return getSortedProjects(items.filter(isPublished));
 }
 
-export function getPeople(): Person[] {
-  return people.filter(isPublished);
+export async function getPeople(): Promise<Person[]> {
+  const items = await getCloudOrLocal(getCloudPeople, people);
+  return items.filter(isPublished);
 }
 
-export function getStories(): Story[] {
-  return stories.filter(isPublished).sort(newestStoryFirst);
+export async function getStories(): Promise<Story[]> {
+  const items = await getCloudOrLocal(getCloudStories, stories);
+  return items.filter(isPublished).sort(newestStoryFirst);
 }
 
-export function getAchievements(): Achievement[] {
-  return achievements.filter(isPublished).sort(newestAchievementFirst);
+export async function getAchievements(): Promise<Achievement[]> {
+  const items = await getCloudOrLocal(getCloudAchievements, achievements);
+  return items.filter(isPublished).sort(newestAchievementFirst);
 }
 
-export function getFeaturedProject(): Project | undefined {
-  const publicProjects = getProjects();
+export async function getFeaturedProject(): Promise<Project | undefined> {
+  const publicProjects = await getProjects();
   return publicProjects.find((project) => project.featured) ?? publicProjects[0];
 }
 
-export function getProjectBySlug(slug: string): Project | undefined {
-  return getProjects().find((project) => project.slug === slug);
+export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
+  return (await getProjects()).find((project) => project.slug === slug);
 }
 
-export function getPersonBySlug(slug: string): Person | undefined {
-  return getPeople().find((person) => person.slug === slug);
+export async function getPersonBySlug(slug: string): Promise<Person | undefined> {
+  return (await getPeople()).find((person) => person.slug === slug);
 }
 
-export function getStoryBySlug(slug: string): Story | undefined {
-  return getStories().find((story) => story.slug === slug);
+export async function getStoryBySlug(slug: string): Promise<Story | undefined> {
+  return (await getStories()).find((story) => story.slug === slug);
 }
 
-export function getProjectById(id: string): Project | undefined {
-  return getProjects().find((project) => project.id === id);
+export async function getProjectById(id: string): Promise<Project | undefined> {
+  return (await getProjects()).find((project) => project.id === id);
 }
 
-export function getProjectsByYear(year: Year): Project[] {
-  return getSortedProjects(getProjects().filter((project) => project.year === year));
+export async function getProjectsByYear(year: Year): Promise<Project[]> {
+  return getSortedProjects((await getProjects()).filter((project) => project.year === year));
 }
 
-export function getProjectGroupsByYear(items: Project[] = getProjects()): ProjectYearGroup[] {
+export function getProjectGroupsByYear(items: Project[] = projects): ProjectYearGroup[] {
   const groups = new Map<Year, Project[]>();
   for (const project of items.filter(isPublished)) {
     groups.set(project.year, [...(groups.get(project.year) ?? []), project]);
@@ -166,29 +184,29 @@ export function getProjectGroupsByYear(items: Project[] = getProjects()): Projec
     }));
 }
 
-export function getPeopleByProject(projectId: string): Person[] {
-  const project = getProjectById(projectId);
-  return getPeople().filter(
+export async function getPeopleByProject(projectId: string): Promise<Person[]> {
+  const [project, publicPeople] = await Promise.all([getProjectById(projectId), getPeople()]);
+  return publicPeople.filter(
     (person) =>
       person.projectIds.includes(projectId) ||
       Boolean(project?.personIds.includes(person.id)),
   );
 }
 
-export function getStoriesByProject(projectId: string): Story[] {
-  return getStories()
+export async function getStoriesByProject(projectId: string): Promise<Story[]> {
+  return (await getStories())
     .filter((story) => story.projectId === projectId)
     .sort(newestStoryFirst);
 }
 
-export function getAchievementsByProject(projectId: string): Achievement[] {
-  return getAchievements()
+export async function getAchievementsByProject(projectId: string): Promise<Achievement[]> {
+  return (await getAchievements())
     .filter((achievement) => achievement.projectId === projectId)
     .sort(newestAchievementFirst);
 }
 
-export function getTeamMembersByProject(projectId: string): TeamMember[] {
-  const project = getProjectById(projectId);
+export async function getTeamMembersByProject(projectId: string): Promise<TeamMember[]> {
+  const project = await getProjectById(projectId);
   return teamMembers.filter(
     (member) =>
       member.projectIds.includes(projectId) ||
@@ -196,20 +214,20 @@ export function getTeamMembersByProject(projectId: string): TeamMember[] {
   );
 }
 
-export function getLatestStories(limit = 4): Story[] {
-  return getStories().slice(0, limit);
+export async function getLatestStories(limit = 4): Promise<Story[]> {
+  return (await getStories()).slice(0, limit);
 }
 
-export function getFeaturedPeople(projectId: string, limit = 6): Person[] {
-  return getPeopleByProject(projectId).slice(0, limit);
+export async function getFeaturedPeople(projectId: string, limit = 6): Promise<Person[]> {
+  return (await getPeopleByProject(projectId)).slice(0, limit);
 }
 
-export function getSortedProjects(items: Project[] = getProjects()): Project[] {
+export function getSortedProjects(items: Project[] = projects): Project[] {
   return [...items].sort(newestFirst);
 }
 
-export function getRelatedStories(currentStory: Story, limit = 3): Story[] {
-  return getStories()
+export async function getRelatedStories(currentStory: Story, limit = 3): Promise<Story[]> {
+  return (await getStories())
     .filter(
       (story) =>
         story.id !== currentStory.id &&
@@ -218,39 +236,46 @@ export function getRelatedStories(currentStory: Story, limit = 3): Story[] {
     .slice(0, limit);
 }
 
-export function getProjectTitle(projectId: string): string {
-  return getProjectById(projectId)?.title ?? "未关联项目";
+export async function getProjectTitle(projectId: string): Promise<string> {
+  return (await getProjectById(projectId))?.title ?? "未关联项目";
 }
 
-export function getStoriesByIds(ids: string[]): Story[] {
+export async function getStoriesByIds(ids: string[]): Promise<Story[]> {
+  const publicStories = await getStories();
   return ids
-    .map((id) => getStories().find((story) => story.id === id || story.slug === id))
+    .map((id) => publicStories.find((story) => story.id === id || story.slug === id))
     .filter((story): story is Story => Boolean(story))
     .sort(newestStoryFirst);
 }
 
-export function getAvailableYears(items: Project[] = getProjects()): Year[] {
+export function getAvailableYears(items: Project[] = projects): Year[] {
   return Array.from(new Set(items.filter(isPublished).map((project) => project.year))).sort((left, right) => right - left);
 }
 
-export function getYearArchive(year: Year): YearArchive {
-  const yearProjects = getProjectsByYear(year);
+export async function getYearArchive(year: Year): Promise<YearArchive> {
+  const [publicProjects, publicPeople, publicStories, publicAchievements] = await Promise.all([
+    getProjects(),
+    getPeople(),
+    getStories(),
+    getAchievements(),
+  ]);
+  const yearProjects = getSortedProjects(publicProjects.filter((project) => project.year === year));
   const projectIds = new Set(yearProjects.map((project) => project.id));
 
   return {
     year,
     projects: yearProjects,
-    people: getPeople().filter(
+    people: publicPeople.filter(
       (person) =>
         person.projectIds.some((projectId) => projectIds.has(projectId)) ||
         yearProjects.some((project) => project.personIds.includes(person.id)),
     ),
-    stories: getStories().filter(
+    stories: publicStories.filter(
       (story) =>
         projectIds.has(story.projectId) ||
         yearProjects.some((project) => project.storyIds.includes(story.id)),
     ),
-    achievements: getAchievements().filter(
+    achievements: publicAchievements.filter(
       (achievement) =>
         projectIds.has(achievement.projectId) ||
         yearProjects.some((project) => project.achievementIds.includes(achievement.id)),
@@ -258,24 +283,24 @@ export function getYearArchive(year: Year): YearArchive {
   };
 }
 
-export function getAvailableSemesters(items: Project[] = getProjects()): Semester[] {
+export function getAvailableSemesters(items: Project[] = projects): Semester[] {
   return Array.from(new Set(items.filter(isPublished).map((project) => project.semester)));
 }
 
-export function getAvailableLocations(items: Project[] = getProjects()): string[] {
+export function getAvailableLocations(items: Project[] = projects): string[] {
   return Array.from(new Set(items.filter(isPublished).map((project) => project.location))).sort();
 }
 
-export function getStoryCategories(items: Story[] = getStories()): StoryCategory[] {
+export function getStoryCategories(items: Story[] = stories): StoryCategory[] {
   return Array.from(new Set(items.filter(isPublished).map((story) => story.category))).sort();
 }
 
-export function getAchievementTypes(items: Achievement[] = getAchievements()): AchievementType[] {
+export function getAchievementTypes(items: Achievement[] = achievements): AchievementType[] {
   return Array.from(new Set(items.filter(isPublished).map((achievement) => achievement.type))).sort();
 }
 
 export function filterProjects(
-  items: Project[] = getProjects(),
+  items: Project[] = projects,
   filters: ProjectFilters = {},
 ): Project[] {
   return getSortedProjects(items.filter(isPublished)).filter(
@@ -288,8 +313,8 @@ export function filterProjects(
 }
 
 export function searchPeople(
-  items: Person[] = getPeople(),
-  projectsById: Project[] = getProjects(),
+  items: Person[] = people,
+  projectsById: Project[] = projects,
   filters: PeopleFilters = {},
 ): Person[] {
   return items.filter(isPublished).filter((person) => {
@@ -315,8 +340,8 @@ export function searchPeople(
 }
 
 export function filterStories(
-  items: Story[] = getStories(),
-  projectsById: Project[] = getProjects(),
+  items: Story[] = stories,
+  projectsById: Project[] = projects,
   filters: StoryFilters = {},
 ): Story[] {
   return items
@@ -334,8 +359,8 @@ export function filterStories(
 }
 
 export function filterAchievements(
-  items: Achievement[] = getAchievements(),
-  projectsById: Project[] = getProjects(),
+  items: Achievement[] = achievements,
+  projectsById: Project[] = projects,
   filters: AchievementFilters = {},
 ): Achievement[] {
   return items
@@ -355,35 +380,46 @@ export function filterAchievements(
     .sort(newestAchievementFirst);
 }
 
-export function getFeaturedStory(items: Story[] = getStories()): Story | undefined {
+export function getFeaturedStory(items: Story[] = stories): Story | undefined {
   const sortedStories = items.filter(isPublished).sort(newestStoryFirst);
   return sortedStories.find((story) => story.featured) ?? sortedStories[0];
 }
 
-export function getSiteStatistics(): SiteStatistics {
-  const publicProjects = getProjects();
+export async function getSiteStatistics(): Promise<SiteStatistics> {
+  const [publicProjects, publicPeople, publicStories, publicAchievements] = await Promise.all([
+    getProjects(),
+    getPeople(),
+    getStories(),
+    getAchievements(),
+  ]);
 
   return {
     projects: publicProjects.length,
-    people: getPeople().length,
-    stories: getStories().length,
-    achievements: getAchievements().length,
+    people: publicPeople.length,
+    stories: publicStories.length,
+    achievements: publicAchievements.length,
     years: getAvailableYears(publicProjects).length,
   };
 }
 
-export function getSearchResults({ query, tag }: SearchFilters = {}): SearchResult[] {
+export async function getSearchResults({ query, tag }: SearchFilters = {}): Promise<SearchResult[]> {
   const normalizedQuery = query?.trim();
   const normalizedTag = tag?.trim();
 
   if (!normalizedQuery && !normalizedTag) return [];
 
+  const [publicProjects, publicPeople, publicStories, publicAchievements] = await Promise.all([
+    getProjects(),
+    getPeople(),
+    getStories(),
+    getAchievements(),
+  ]);
   const matches = (title: string, summary: string, tags: string[]) =>
     stringMatches([title, summary, ...tags].join(" "), normalizedQuery) &&
     tagMatches(tags, normalizedTag);
 
   return [
-    ...getProjects()
+    ...publicProjects
       .filter((project) => matches(project.title, project.summary, project.tags))
       .map<SearchResult>((project) => ({
         id: project.id,
@@ -394,7 +430,7 @@ export function getSearchResults({ query, tag }: SearchFilters = {}): SearchResu
         meta: `${project.year}年 · ${project.semester}`,
         tags: project.tags,
       })),
-    ...getPeople()
+    ...publicPeople
       .filter((person) => matches(person.name, person.summary, person.keywords))
       .map<SearchResult>((person) => ({
         id: person.id,
@@ -405,7 +441,7 @@ export function getSearchResults({ query, tag }: SearchFilters = {}): SearchResu
         meta: person.category,
         tags: person.keywords,
       })),
-    ...getStories()
+    ...publicStories
       .filter((story) => matches(story.title, story.summary, [story.category, ...story.tags]))
       .map<SearchResult>((story) => ({
         id: story.id,
@@ -416,7 +452,7 @@ export function getSearchResults({ query, tag }: SearchFilters = {}): SearchResu
         meta: story.category,
         tags: [story.category, ...story.tags],
       })),
-    ...getAchievements()
+    ...publicAchievements
       .filter((achievement) => matches(achievement.title, achievement.summary, [achievement.type]))
       .map<SearchResult>((achievement) => ({
         id: achievement.id,
@@ -430,8 +466,8 @@ export function getSearchResults({ query, tag }: SearchFilters = {}): SearchResu
   ];
 }
 
-export function getArchiveStats() {
-  const stats = getSiteStatistics();
+export async function getArchiveStats() {
+  const stats = await getSiteStatistics();
 
   return [
     { label: "收录实践项目", value: String(stats.projects), note: "按年份与学期归档" },

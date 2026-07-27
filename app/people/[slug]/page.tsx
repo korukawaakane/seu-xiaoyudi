@@ -18,7 +18,6 @@ import {
   getPeople,
   getPersonBySlug,
   getProjectById,
-  getProjectTitle,
   getStoriesByIds,
 } from "@/src/lib/content";
 import type { Project } from "@/src/types";
@@ -36,13 +35,13 @@ const peopleAnchors = [
   { id: "sources", label: "资料来源" },
 ];
 
-export function generateStaticParams() {
-  return getPeople().map((person) => ({ slug: person.slug }));
+export async function generateStaticParams() {
+  return (await getPeople()).map((person) => ({ slug: person.slug }));
 }
 
 export async function generateMetadata({ params }: PersonDetailProps): Promise<Metadata> {
   const { slug } = await params;
-  const person = getPersonBySlug(slug);
+  const person = await getPersonBySlug(slug);
   if (!person) return {};
   const title = `${person.name}｜人物档案｜SEU“小雨滴”社会实践团`;
 
@@ -75,13 +74,13 @@ export async function generateMetadata({ params }: PersonDetailProps): Promise<M
 
 export default async function PersonDetailPage({ params }: PersonDetailProps) {
   const { slug } = await params;
-  const person = getPersonBySlug(slug);
+  const person = await getPersonBySlug(slug);
   if (!person) notFound();
 
-  const relatedProjects = person.projectIds
-    .map((id) => getProjectById(id))
+  const relatedProjects = (await Promise.all(person.projectIds.map((id) => getProjectById(id))))
     .filter((project): project is Project => Boolean(project));
-  const relatedStories = getStoriesByIds(person.storyIds);
+  const relatedStories = await getStoriesByIds(person.storyIds);
+  const projectTitles = new Map(relatedProjects.map((project) => [project.id, project.title]));
 
   return (
     <>
@@ -178,7 +177,7 @@ export default async function PersonDetailPage({ params }: PersonDetailProps) {
             <div className="mt-12">
               <SectionHeading title="相关文章" description="相关纪实文章由人物数据中的关联标识自动读取。" />
               <div className="grid gap-1">
-                {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={getProjectTitle(story.projectId)} story={story} />)}
+                {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={projectTitles.get(story.projectId) ?? "未关联项目"} story={story} />)}
               </div>
             </div>
           ) : null}

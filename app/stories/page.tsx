@@ -22,9 +22,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function StoriesPage() {
-  const projects = getProjects();
-  const stories = getStories();
+export default async function StoriesPage() {
+  const [projects, stories] = await Promise.all([getProjects(), getStories()]);
 
   return (
     <>

@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q = "", tag = "" } = await searchParams;
   const hasQuery = Boolean(q.trim() || tag.trim());
-  const results = getSearchResults({ query: q, tag });
+  const results = await getSearchResults({ query: q, tag });
 
   return (
     <>

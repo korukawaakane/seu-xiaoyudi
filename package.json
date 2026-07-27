@@ -9,10 +9,14 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "vinext start",
+    "migrate:content": "node scripts/migrate-content.mjs",
+    "import:cloudbase": "tsx scripts/import-cloudbase.ts",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .vercel --ignore-pattern .output"
   },
   "dependencies": {
+    "@cloudbase/js-sdk": "^3.6.2",
+    "@cloudbase/node-sdk": "^3.18.3",
     "lucide-react": "^1.24.0",
     "next": "16.2.6",
     "react": "19.2.6",
@@ -32,6 +36,7 @@
     "nitro": "^3.0.260610-beta",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
+    "tsx": "^4.23.1",
     "typescript": "5.9.3",
     "vinext": "0.0.50",
     "vite": "8.0.13",

@@ -13,8 +13,7 @@ import { ImagePlaceholder } from "@/src/components/ui/ImagePlaceholder";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
 import { Tag } from "@/src/components/ui/Tag";
 import {
-  getProjectById,
-  getProjectTitle,
+  getProjects,
   getRelatedStories,
   getStories,
   getStoryBySlug,
@@ -25,13 +24,13 @@ type StoryDetailProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return getStories().map((story) => ({ slug: story.slug }));
+export async function generateStaticParams() {
+  return (await getStories()).map((story) => ({ slug: story.slug }));
 }
 
 export async function generateMetadata({ params }: StoryDetailProps): Promise<Metadata> {
   const { slug } = await params;
-  const story = getStoryBySlug(slug);
+  const story = await getStoryBySlug(slug);
   if (!story) return {};
   const title = `${story.title}｜实践纪实｜SEU“小雨滴”社会实践团`;
 
@@ -65,11 +64,12 @@ export async function generateMetadata({ params }: StoryDetailProps): Promise<Me
 
 export default async function StoryDetailPage({ params }: StoryDetailProps) {
   const { slug } = await params;
-  const story = getStoryBySlug(slug);
+  const story = await getStoryBySlug(slug);
   if (!story) notFound();
 
-  const project = getProjectById(story.projectId);
-  const relatedStories = getRelatedStories(story);
+  const [projects, relatedStories] = await Promise.all([getProjects(), getRelatedStories(story)]);
+  const project = projects.find((item) => item.id === story.projectId);
+  const projectTitles = new Map(projects.map((item) => [item.id, item.title]));
 
   return (
     <>
@@ -98,7 +98,7 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
               <div className="inline-flex items-center gap-2">
                 <FolderArchive aria-hidden="true" size={16} />
                 <dt className="sr-only">所属项目</dt>
-                <dd>{getProjectTitle(story.projectId)}</dd>
+                <dd>{projectTitles.get(story.projectId) ?? "未关联项目"}</dd>
               </div>
               <div className="inline-flex items-center gap-2">
                 <UserRound aria-hidden="true" size={16} />
@@ -132,7 +132,7 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
               </div>
               <div>
                 <dt className="font-medium text-ink">所属项目</dt>
-                <dd className="mt-1">{getProjectTitle(story.projectId)}</dd>
+                <dd className="mt-1">{projectTitles.get(story.projectId) ?? "未关联项目"}</dd>
               </div>
               <div>
                 <dt className="font-medium text-ink">整理人员</dt>
@@ -166,7 +166,7 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
           <SectionHeading title="相关文章" description="按同项目或同分类展示相关纪实内容。" />
           {relatedStories.length ? (
             <div className="grid gap-1">
-              {relatedStories.map((item) => <StoryCard compact key={item.id} projectTitle={getProjectTitle(item.projectId)} story={item} />)}
+              {relatedStories.map((item) => <StoryCard compact key={item.id} projectTitle={projectTitles.get(item.projectId) ?? "未关联项目"} story={item} />)}
             </div>
           ) : (
             <EmptyState title="相关文章待补充" description="后续新增文章后，系统会按关联关系自动推荐。" />

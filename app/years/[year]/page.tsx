@@ -8,23 +8,23 @@ import { Container } from "@/src/components/ui/Container";
 import { EmptyState } from "@/src/components/ui/EmptyState";
 import { PageHero } from "@/src/components/ui/PageHero";
 import { SectionHeading } from "@/src/components/ui/SectionHeading";
-import { getAvailableYears, getProjectTitle, getYearArchive } from "@/src/lib/content";
+import { getAvailableYears, getProjects, getYearArchive } from "@/src/lib/content";
 
 type YearArchivePageProps = {
   params: Promise<{ year: string }>;
 };
 
-const isAvailableYear = (year: number) => getAvailableYears().includes(year);
+const isAvailableYear = async (year: number) => getAvailableYears(await getProjects()).includes(year);
 
-export function generateStaticParams() {
-  return getAvailableYears().map((year) => ({ year: String(year) }));
+export async function generateStaticParams() {
+  return (await getAvailableYears(await getProjects())).map((year) => ({ year: String(year) }));
 }
 
 export async function generateMetadata({ params }: YearArchivePageProps): Promise<Metadata> {
   const { year: yearParam } = await params;
   const year = Number(yearParam);
 
-  if (!Number.isInteger(year) || !isAvailableYear(year)) return {};
+  if (!Number.isInteger(year) || !(await isAvailableYear(year))) return {};
 
   return {
     title: `${year} 年归档`,
@@ -37,9 +37,10 @@ export default async function YearArchivePage({ params }: YearArchivePageProps) 
   const { year: yearParam } = await params;
   const year = Number(yearParam);
 
-  if (!Number.isInteger(year) || !isAvailableYear(year)) notFound();
+  if (!Number.isInteger(year) || !(await isAvailableYear(year))) notFound();
 
-  const archive = getYearArchive(year);
+  const archive = await getYearArchive(year);
+  const projectTitles = new Map(archive.projects.map((project) => [project.id, project.title]));
   const itemCount =
     archive.projects.length +
     archive.people.length +
@@ -77,7 +78,7 @@ export default async function YearArchivePage({ params }: YearArchivePageProps) 
                 <PersonCard
                   key={person.id}
                   person={person}
-                  projectTitle={getProjectTitle(person.projectIds[0])}
+                  projectTitle={projectTitles.get(person.projectIds[0]) ?? "未关联项目"}
                 />
               ))}
             </div>
@@ -96,7 +97,7 @@ export default async function YearArchivePage({ params }: YearArchivePageProps) 
                 <StoryCard
                   compact
                   key={story.id}
-                  projectTitle={getProjectTitle(story.projectId)}
+                  projectTitle={projectTitles.get(story.projectId) ?? "未关联项目"}
                   story={story}
                 />
               ))}
@@ -116,7 +117,7 @@ export default async function YearArchivePage({ params }: YearArchivePageProps) 
                 <AchievementCard
                   achievement={achievement}
                   key={achievement.id}
-                  projectTitle={getProjectTitle(achievement.projectId)}
+                  projectTitle={projectTitles.get(achievement.projectId) ?? "未关联项目"}
                 />
               ))}
             </div>
