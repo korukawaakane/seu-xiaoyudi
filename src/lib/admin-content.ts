@@ -137,7 +137,7 @@ export async function signInAdmin(username: string, password: string): Promise<v
 
   try {
     response = await fetch(
-      `https://${envId}.api.tcloudbasegateway.com/auth/v1/signin?client_id=${encodeURIComponent(envId)}`,
+      `https://${envId}.ap-shanghai.tcb-api.tencentcloudapi.com/auth/v1/signin?client_id=${encodeURIComponent(envId)}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
