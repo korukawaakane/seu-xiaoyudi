@@ -7,13 +7,20 @@ type CloudDocument = Record<string, unknown> & { _id?: unknown; _openid?: unknow
 const cloudRequests = new Map<CloudCollection, Promise<unknown[]>>();
 let cloudApp: ReturnType<typeof cloudbase.init> | undefined;
 
-export function getCloudApp() {
+export function getCloudbaseEnvId(): string {
   const envId = process.env.NEXT_PUBLIC_CLOUDBASE_ENV_ID;
   if (!envId) {
     throw new Error("NEXT_PUBLIC_CLOUDBASE_ENV_ID is not configured");
   }
 
-  cloudApp ??= cloudbase.init({ env: envId });
+  return envId;
+}
+
+export function getCloudApp() {
+  cloudApp ??= cloudbase.init({
+    env: getCloudbaseEnvId(),
+    region: "ap-shanghai",
+  });
   return cloudApp;
 }
 

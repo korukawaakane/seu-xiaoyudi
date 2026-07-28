@@ -1,6 +1,6 @@
 "use client";
 
-import { getCloudApp } from "@/src/lib/cloudbase";
+import { getCloudApp, getCloudbaseEnvId } from "@/src/lib/cloudbase";
 import type { Achievement, Person, Project, Story } from "@/src/types";
 
 export type AdminCollection = "projects" | "people" | "stories" | "achievements";
@@ -35,6 +35,14 @@ export type AdminWorkspace = {
 type CloudDocument = Record<string, unknown> & {
   _id?: unknown;
   _openid?: unknown;
+};
+
+type CloudAuthResponse = {
+  access_token?: unknown;
+  refresh_token?: unknown;
+  code?: unknown;
+  error?: unknown;
+  error_description?: unknown;
 };
 
 function getDatabase() {
@@ -124,13 +132,70 @@ export async function getAdminMember(uid: string): Promise<AdminMember | null> {
 }
 
 export async function signInAdmin(username: string, password: string): Promise<void> {
-  const result = await getAuth().signInWithPassword({
-    username: username.trim(),
-    password,
+  const envId = getCloudbaseEnvId();
+  let response: Response;
+
+  try {
+    response = await fetch(
+      `https://${envId}.api.tcloudbasegateway.com/auth/v1/signin?client_id=${encodeURIComponent(envId)}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: username.trim(),
+          password,
+        }),
+      },
+    );
+  } catch {
+    throw new Error("无法连接 CloudBase 登录服务，请检查网络后重试");
+  }
+
+  let payload: CloudAuthResponse = {};
+  try {
+    payload = await response.json() as CloudAuthResponse;
+  } catch {
+    if (!response.ok) {
+      throw new Error(`CloudBase 登录服务返回异常（${response.status}）`);
+    }
+  }
+
+  if (!response.ok) {
+    if (
+      payload.code === "INVALID_USERNAME_OR_PASSWORD" ||
+      payload.error === "invalid_username_or_password"
+    ) {
+      throw new Error("用户名或密码不正确");
+    }
+    if (payload.error === "captcha_required") {
+      throw new Error("登录尝试次数过多，请稍后再试");
+    }
+    if (payload.error === "invalid_status") {
+      throw new Error("账号暂时被锁定，请稍后再试");
+    }
+
+    const detail = typeof payload.error_description === "string"
+      ? payload.error_description
+      : typeof payload.error === "string"
+        ? payload.error
+        : `状态码 ${response.status}`;
+    throw new Error(`CloudBase 登录失败：${detail}`);
+  }
+
+  if (
+    typeof payload.access_token !== "string" ||
+    typeof payload.refresh_token !== "string"
+  ) {
+    throw new Error("CloudBase 登录服务未返回完整会话信息");
+  }
+
+  const session = await getAuth().setSession({
+    access_token: payload.access_token,
+    refresh_token: payload.refresh_token,
   }) as { error?: { message?: string } | null };
 
-  if (result.error) {
-    throw new Error(result.error.message ?? "账号或密码不正确");
+  if (session.error) {
+    throw new Error(session.error.message ?? "无法建立 CloudBase 登录会话");
   }
 }
 
