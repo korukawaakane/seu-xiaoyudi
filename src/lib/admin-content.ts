@@ -40,9 +40,26 @@ type CloudDocument = Record<string, unknown> & {
 type CloudAuthResponse = {
   access_token?: unknown;
   refresh_token?: unknown;
+  expires_in?: unknown;
+  token_type?: unknown;
+  scope?: unknown;
+  sub?: unknown;
   code?: unknown;
   error?: unknown;
   error_description?: unknown;
+};
+
+type CloudCredentials = {
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  token_type?: string;
+  scope?: string;
+};
+
+type LocalAuth = {
+  getCredentials(): Promise<CloudCredentials | null>;
+  setCredentials(credentials: CloudCredentials | null): Promise<void>;
 };
 
 function getDatabase() {
@@ -51,6 +68,48 @@ function getDatabase() {
 
 function getAuth() {
   return getCloudApp().auth();
+}
+
+function getLocalAuth(): LocalAuth {
+  return getAuth() as unknown as LocalAuth;
+}
+
+function getAdminSessionStorageKey(): string {
+  return `raindrop-cms-user:${getCloudbaseEnvId()}`;
+}
+
+function cacheAdminUser(user: AdminUser): void {
+  window.localStorage.setItem(getAdminSessionStorageKey(), JSON.stringify(user));
+}
+
+function clearCachedAdminUser(): void {
+  window.localStorage.removeItem(getAdminSessionStorageKey());
+}
+
+function getCachedAdminUser(): AdminUser | null {
+  const value = window.localStorage.getItem(getAdminSessionStorageKey());
+  if (!value) return null;
+
+  try {
+    const user = JSON.parse(value) as Partial<AdminUser>;
+    if (
+      typeof user.uid !== "string" ||
+      typeof user.username !== "string" ||
+      typeof user.displayName !== "string"
+    ) {
+      clearCachedAdminUser();
+      return null;
+    }
+
+    return {
+      uid: user.uid,
+      username: user.username,
+      displayName: user.displayName,
+    };
+  } catch {
+    clearCachedAdminUser();
+    return null;
+  }
 }
 
 function toStoredDocument<Document extends AdminContentDocument>(
@@ -99,15 +158,16 @@ export async function getAdminWorkspace(): Promise<AdminWorkspace> {
 }
 
 export async function getCurrentAdminUser(): Promise<AdminUser | null> {
-  const user = await getAuth().getCurrentUser();
-  if (!user?.uid) return null;
+  const user = getCachedAdminUser();
+  if (!user) return null;
 
-  const username = user.username ?? user.email ?? user.uid;
-  return {
-    uid: user.uid,
-    username,
-    displayName: user.displayName ?? user.name ?? username,
-  };
+  const credentials = await getLocalAuth().getCredentials();
+  if (typeof credentials?.access_token !== "string") {
+    clearCachedAdminUser();
+    return null;
+  }
+
+  return user;
 }
 
 export async function getAdminMember(uid: string): Promise<AdminMember | null> {
@@ -184,23 +244,47 @@ export async function signInAdmin(username: string, password: string): Promise<v
 
   if (
     typeof payload.access_token !== "string" ||
-    typeof payload.refresh_token !== "string"
+    typeof payload.refresh_token !== "string" ||
+    typeof payload.expires_in !== "number" ||
+    typeof payload.sub !== "string"
   ) {
     throw new Error("CloudBase 登录服务未返回完整会话信息");
   }
 
-  const session = await getAuth().setSession({
+  const credentials: CloudCredentials = {
     access_token: payload.access_token,
     refresh_token: payload.refresh_token,
-  }) as { error?: { message?: string } | null };
+    expires_in: payload.expires_in,
+  };
+  if (typeof payload.token_type === "string") {
+    credentials.token_type = payload.token_type;
+  }
+  if (typeof payload.scope === "string") {
+    credentials.scope = payload.scope;
+  }
 
-  if (session.error) {
-    throw new Error(session.error.message ?? "无法建立 CloudBase 登录会话");
+  try {
+    await getLocalAuth().setCredentials(credentials);
+    cacheAdminUser({
+      uid: payload.sub,
+      username: username.trim(),
+      displayName: username.trim(),
+    });
+  } catch {
+    clearCachedAdminUser();
+    throw new Error("浏览器无法保存登录状态，请检查隐私或存储设置");
   }
 }
 
 export async function signOutAdmin(): Promise<void> {
-  await getAuth().signOut();
+  try {
+    await getAuth().signOut();
+  } catch {
+    // The local session must still be removed when CloudBase is unreachable.
+  }
+
+  await getLocalAuth().setCredentials(null);
+  clearCachedAdminUser();
 }
 
 export async function saveAdminDocument(

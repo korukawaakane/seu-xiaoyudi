@@ -20,6 +20,7 @@ export function getCloudApp() {
   cloudApp ??= cloudbase.init({
     env: getCloudbaseEnvId(),
     region: "ap-shanghai",
+    endPointMode: "CLOUD_API",
   });
   return cloudApp;
 }
