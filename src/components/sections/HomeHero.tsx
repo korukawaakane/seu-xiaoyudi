@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Archive, ArrowRight } from "lucide-react";
+import { ArrowRight, Newspaper } from "lucide-react";
 import { siteConfig } from "@/src/config/site";
 import type { Project } from "@/src/types";
 import { BrandLogo } from "@/src/components/brand/BrandLogo";
@@ -23,11 +23,11 @@ export function HomeHero({ project }: HomeHeroProps) {
             {siteConfig.siteName}
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-            {siteConfig.slogan}。推荐项目待设置，仍可先浏览已收录的历届实践资料。
+            {siteConfig.slogan}。推荐专题待设置，仍可先浏览已发布的活动动态。
           </p>
-          <Link className="btn-primary mt-8" href="/projects">
-            浏览历届项目
-            <Archive aria-hidden="true" size={18} />
+          <Link className="btn-primary mt-8" href="/stories">
+            查看活动动态
+            <Newspaper aria-hidden="true" size={18} />
           </Link>
         </Container>
       </section>
@@ -41,7 +41,7 @@ export function HomeHero({ project }: HomeHeroProps) {
         <div className="max-w-3xl">
           <BrandLogo />
           <div className="mt-7 flex flex-wrap items-center gap-2">
-            <Tag tone="red">当前推荐项目</Tag>
+            <Tag tone="red">本期实践专题</Tag>
             <Tag tone="bronze">
               {project.year}年 {project.semester}
             </Tag>
@@ -55,12 +55,12 @@ export function HomeHero({ project }: HomeHeroProps) {
           <p className="mt-5 max-w-2xl text-base leading-8 text-muted">{project.summary}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link className="btn-primary" href={"/projects/" + project.slug}>
-              进入本期实践
+              查看实践专题
               <ArrowRight aria-hidden="true" size={18} />
             </Link>
-            <Link className="btn-secondary" href="/projects">
-              浏览历届项目
-              <Archive aria-hidden="true" size={18} />
+            <Link className="btn-secondary" href="/stories">
+              查看活动动态
+              <Newspaper aria-hidden="true" size={18} />
             </Link>
           </div>
         </div>

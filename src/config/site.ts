@@ -8,7 +8,7 @@ export const siteConfig: SiteConfig = {
   slogan: "汇聚点滴实践，记录青春足迹",
   secondarySlogan: "记录实践足迹，传承时代精神",
   description:
-    "记录SEU“小雨滴”社会实践团历届社会实践项目、人物档案、实践纪实、影像资料与实践成果。",
+    "记录SEU“小雨滴”社会实践团的团队历程、活动动态、英烈档案、实践产品与历年专题。",
   showStats: true,
 };
 

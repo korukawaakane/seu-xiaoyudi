@@ -6,19 +6,19 @@ import { PageHero } from "@/src/components/ui/PageHero";
 import { getProjects, getStories } from "@/src/lib/content";
 
 export const metadata: Metadata = {
-  title: "实践纪实",
-  description: "以文章列表形式展示社会实践过程记录。",
+  title: "活动动态",
+  description: "持续发布社会实践调研进展、实践日志与活动报道。",
   alternates: { canonical: "/stories" },
   openGraph: {
-    title: "实践纪实｜SEU“小雨滴”社会实践团",
-    description: "以文章列表形式展示社会实践过程记录。",
+    title: "活动动态｜SEU“小雨滴”社会实践团",
+    description: "持续发布社会实践调研进展、实践日志与活动报道。",
     url: "/stories",
-    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "实践纪实" }],
+    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "活动动态" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "实践纪实｜SEU“小雨滴”社会实践团",
-    description: "以文章列表形式展示社会实践过程记录。",
+    title: "活动动态｜SEU“小雨滴”社会实践团",
+    description: "持续发布社会实践调研进展、实践日志与活动报道。",
     images: ["/images/og-image.svg"],
   },
 };
@@ -29,10 +29,10 @@ export default async function StoriesPage() {
   return (
     <>
       <PageHero
-        eyebrow="实践纪实"
-        title="记录实践过程与现场材料"
-        description="纪实文章按分类、所属项目和年份筛选，全部文章共用统一的阅读详情页面。"
-        stat={{ value: String(stories.length), label: "篇已收录文章" }}
+        eyebrow="活动动态"
+        title="记录正在发生的实践"
+        description="调研进展、实践日志和活动报道按发布时间排列，也可按分类、实践专题和年份筛选。"
+        stat={{ value: String(stories.length), label: "篇已发布动态" }}
       />
       <section className="section-space bg-paper">
         <Container>

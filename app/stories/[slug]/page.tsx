@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: StoryDetailProps): Promise<Me
   const { slug } = await params;
   const story = await getStoryBySlug(slug);
   if (!story) return {};
-  const title = `${story.title}｜实践纪实｜SEU“小雨滴”社会实践团`;
+  const title = `${story.title}｜活动动态｜SEU“小雨滴”社会实践团`;
 
   return {
     title: { absolute: title },
@@ -78,7 +78,7 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
           <Breadcrumb
             items={[
               { label: "首页", href: "/" },
-              { label: "实践纪实", href: "/stories" },
+              { label: "活动动态", href: "/stories" },
               { label: story.title },
             ]}
           />
@@ -97,8 +97,8 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
               </div>
               <div className="inline-flex items-center gap-2">
                 <FolderArchive aria-hidden="true" size={16} />
-                <dt className="sr-only">所属项目</dt>
-                <dd>{projectTitles.get(story.projectId) ?? "未关联项目"}</dd>
+                <dt className="sr-only">实践专题</dt>
+                <dd>{projectTitles.get(story.projectId) ?? "未关联专题"}</dd>
               </div>
               <div className="inline-flex items-center gap-2">
                 <UserRound aria-hidden="true" size={16} />
@@ -119,20 +119,20 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
       <section className="section-space bg-white">
         <Container className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <article className="prose-panel">
-            <h2 className="font-serif text-2xl font-semibold text-ink">纪实正文</h2>
+            <h2 className="font-serif text-2xl font-semibold text-ink">动态正文</h2>
             <StoryMarkdown blocks={story.content} />
             <blockquote className="quote-panel mt-8">{story.summary}</blockquote>
           </article>
           <aside className="order-first border-b border-line pb-6 lg:order-none lg:border-l lg:border-b-0 lg:pl-6 lg:pb-0">
-            <h2 className="font-serif text-xl font-semibold text-ink">文章信息</h2>
+            <h2 className="font-serif text-xl font-semibold text-ink">动态信息</h2>
             <dl className="mt-4 grid gap-4 text-sm text-muted">
               <div>
                 <dt className="font-medium text-ink">分类</dt>
                 <dd className="mt-1">{story.category}</dd>
               </div>
               <div>
-                <dt className="font-medium text-ink">所属项目</dt>
-                <dd className="mt-1">{projectTitles.get(story.projectId) ?? "未关联项目"}</dd>
+                <dt className="font-medium text-ink">实践专题</dt>
+                <dd className="mt-1">{projectTitles.get(story.projectId) ?? "未关联专题"}</dd>
               </div>
               <div>
                 <dt className="font-medium text-ink">整理人员</dt>
@@ -152,28 +152,28 @@ export default async function StoryDetailPage({ params }: StoryDetailProps) {
 
       <section className="section-space bg-white">
         <Container>
-          <SectionHeading title="相关项目入口" description="文章与项目通过项目标识建立关联。" />
+          <SectionHeading title="相关实践专题" description="动态与专题通过项目标识建立关联。" />
           {project ? (
             <div className="max-w-md"><ProjectCard project={project} /></div>
           ) : (
-            <EmptyState title="关联项目待补充" description="该文章尚未匹配到有效项目资料。" />
+            <EmptyState title="关联专题待补充" description="该动态尚未匹配到有效专题资料。" />
           )}
         </Container>
       </section>
 
       <section className="section-space bg-paper">
         <Container>
-          <SectionHeading title="相关文章" description="按同项目或同分类展示相关纪实内容。" />
+          <SectionHeading title="相关动态" description="按同专题或同分类展示相关活动内容。" />
           {relatedStories.length ? (
             <div className="grid gap-1">
-              {relatedStories.map((item) => <StoryCard compact key={item.id} projectTitle={projectTitles.get(item.projectId) ?? "未关联项目"} story={item} />)}
+              {relatedStories.map((item) => <StoryCard compact key={item.id} projectTitle={projectTitles.get(item.projectId) ?? "未关联专题"} story={item} />)}
             </div>
           ) : (
-            <EmptyState title="相关文章待补充" description="后续新增文章后，系统会按关联关系自动推荐。" />
+            <EmptyState title="相关动态待补充" description="后续新增动态后，系统会按关联关系自动推荐。" />
           )}
           <Link className="btn-secondary mt-8" href="/stories">
             <ArrowLeft aria-hidden="true" size={18} />
-            返回文章列表
+            返回活动动态
           </Link>
         </Container>
       </section>

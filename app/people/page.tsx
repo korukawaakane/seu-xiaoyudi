@@ -6,19 +6,19 @@ import { PageHero } from "@/src/components/ui/PageHero";
 import { getPeople, getProjects } from "@/src/lib/content";
 
 export const metadata: Metadata = {
-  title: "人物档案",
-  description: "集中展示历届社会实践中收录的人物档案占位数据。",
+  title: "英烈档案",
+  description: "一人一档整理英烈生平、事迹、精神关键词与相关实践资料。",
   alternates: { canonical: "/people" },
   openGraph: {
-    title: "人物档案｜SEU“小雨滴”社会实践团",
-    description: "集中展示历届社会实践中收录的人物档案。",
+    title: "英烈档案｜SEU“小雨滴”社会实践团",
+    description: "一人一档整理英烈生平、事迹、精神关键词与相关实践资料。",
     url: "/people",
-    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "人物档案" }],
+    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "英烈档案" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "人物档案｜SEU“小雨滴”社会实践团",
-    description: "集中展示历届社会实践中收录的人物档案。",
+    title: "英烈档案｜SEU“小雨滴”社会实践团",
+    description: "一人一档整理英烈生平、事迹、精神关键词与相关实践资料。",
     images: ["/images/og-image.svg"],
   },
 };
@@ -29,10 +29,10 @@ export default async function PeoplePage() {
   return (
     <>
       <PageHero
-        eyebrow="人物档案"
-        title="连接实践与人物记忆"
-        description="人物字段保持通用，可收录访谈对象、榜样人物、历史人物和实践相关人物，不预设单一类型。"
-        stat={{ value: String(people.length), label: "份已收录档案" }}
+        eyebrow="英烈档案"
+        title="一位英烈，一份完整档案"
+        description="每份档案独立整理生平、身份、重要事迹、精神关键词、影像与相关实践专题。"
+        stat={{ value: String(people.length), label: "份已公开档案" }}
       />
       <section className="section-space bg-paper">
         <Container>

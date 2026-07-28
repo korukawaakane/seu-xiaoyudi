@@ -43,7 +43,7 @@ export function StoryCard({ story, projectTitle, compact = false }: StoryCardPro
         </div>
         <h2 className="mt-3 font-serif text-xl font-semibold text-ink">{story.title}</h2>
         <p className="mt-3 line-clamp-2 text-sm leading-7 text-muted">{story.summary}</p>
-        <p className="mt-3 text-xs font-medium text-muted">所属项目：{projectTitle}</p>
+        <p className="mt-3 text-xs font-medium text-muted">实践专题：{projectTitle}</p>
         <Link className="action-link mt-4" href={"/stories/" + story.slug}>
           查看详情
           <ArrowRight aria-hidden="true" size={16} />

@@ -28,7 +28,7 @@ export function PeopleExplorer({ people, projects }: PeopleExplorerProps) {
   const filtered = searchPeople(people, projects, filters);
   const hasActiveFilters = Object.values(filters).some(Boolean);
   const projectTitle = (id: string) =>
-    projects.find((project) => project.id === id)?.title ?? "实践项目占位";
+    projects.find((project) => project.id === id)?.title ?? "未关联专题";
 
   return (
     <>
@@ -50,9 +50,9 @@ export function PeopleExplorer({ people, projects }: PeopleExplorerProps) {
             {years.map((year) => <option key={year} value={String(year)}>{year}年</option>)}
           </select>
         </FilterField>
-        <FilterField label="项目筛选">
-          <select aria-label="项目筛选" className="field-control" onChange={(event) => update("project", event.currentTarget.value)} onInput={(event) => update("project", event.currentTarget.value)} value={filters.project}>
-            <option value="">全部项目</option>
+        <FilterField label="实践专题">
+          <select aria-label="实践专题" className="field-control" onChange={(event) => update("project", event.currentTarget.value)} onInput={(event) => update("project", event.currentTarget.value)} value={filters.project}>
+            <option value="">全部专题</option>
             {projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}
           </select>
         </FilterField>
@@ -70,7 +70,7 @@ export function PeopleExplorer({ people, projects }: PeopleExplorerProps) {
         </FilterField>
       </FilterBar>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
-        <p aria-live="polite" className="text-sm text-muted">当前显示 {filtered.length} 份人物档案</p>
+        <p aria-live="polite" className="text-sm text-muted">当前显示 {filtered.length} 份英烈档案</p>
         <button
           className="btn-secondary min-h-10 px-4 py-2"
           disabled={!hasActiveFilters}
@@ -87,7 +87,7 @@ export function PeopleExplorer({ people, projects }: PeopleExplorerProps) {
           ))}
         </div>
       ) : (
-        <EmptyState title="没有符合条件的人物档案" description="请调整搜索词、年份、项目、类别或关键词筛选条件。" />
+        <EmptyState title="没有符合条件的英烈档案" description="请调整搜索词、年份、实践专题、类别或关键词筛选条件。" />
       )}
     </>
   );

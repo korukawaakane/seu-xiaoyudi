@@ -237,7 +237,7 @@ export async function getRelatedStories(currentStory: Story, limit = 3): Promise
 }
 
 export async function getProjectTitle(projectId: string): Promise<string> {
-  return (await getProjectById(projectId))?.title ?? "未关联项目";
+  return (await getProjectById(projectId))?.title ?? "未关联专题";
 }
 
 export async function getStoriesByIds(ids: string[]): Promise<Story[]> {
@@ -473,11 +473,11 @@ export async function getArchiveStats() {
   const stats = await getSiteStatistics();
 
   return [
-    { label: "收录实践项目", value: String(stats.projects), note: "按年份与学期归档" },
-    { label: "收录人物档案", value: String(stats.people), note: "关联至公开项目" },
-    { label: "发布纪实文章", value: String(stats.stories), note: "按日期持续更新" },
-    { label: "收录实践成果", value: String(stats.achievements), note: "成果类型可按标签检索" },
-    { label: "归档年份", value: String(stats.years), note: "仅统计已发布内容" },
+    { label: "实践专题", value: String(stats.projects), note: "集中关联完整资料" },
+    { label: "英烈档案", value: String(stats.people), note: "一人一档持续整理" },
+    { label: "活动动态", value: String(stats.stories), note: "按日期持续更新" },
+    { label: "实践产品", value: String(stats.achievements), note: "按类型分类展示" },
+    { label: "覆盖年份", value: String(stats.years), note: "自动生成历年索引" },
   ];
 }
 

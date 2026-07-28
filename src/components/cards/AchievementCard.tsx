@@ -44,7 +44,7 @@ export function AchievementCard({ achievement, projectTitle }: AchievementCardPr
       <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted">{achievement.summary}</p>
       <dl className="mt-4 grid gap-2 text-sm text-muted">
         <div>
-          <dt className="font-medium text-ink">所属项目</dt>
+          <dt className="font-medium text-ink">实践专题</dt>
           <dd>{projectTitle}</dd>
         </div>
         <div>

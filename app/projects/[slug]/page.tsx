@@ -31,12 +31,12 @@ type ProjectDetailProps = {
 };
 
 const projectAnchors = [
-  { id: "overview", label: "项目概况" },
-  { id: "people", label: "相关人物" },
+  { id: "overview", label: "专题概况" },
+  { id: "people", label: "英烈档案" },
   { id: "timeline", label: "实践历程" },
-  { id: "stories", label: "实践纪实" },
+  { id: "stories", label: "活动动态" },
   { id: "gallery", label: "影像记录" },
-  { id: "achievements", label: "实践成果" },
+  { id: "achievements", label: "产品展示" },
   { id: "team", label: "团队信息" },
 ];
 
@@ -104,7 +104,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
           <Breadcrumb
             items={[
               { label: "首页", href: "/" },
-              { label: "历届实践", href: "/projects" },
+              { label: "实践专题", href: "/projects" },
               { label: project.title },
             ]}
           />
@@ -125,7 +125,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
               </p>
               <Link className="btn-secondary mt-7" href="/projects">
                 <ArrowLeft aria-hidden="true" size={18} />
-                返回历届实践
+                返回实践专题
               </Link>
             </div>
             <div className="border-t-4 pt-4" style={{ borderTopColor: getProjectAccent(project.themeColor) }}>
@@ -141,11 +141,11 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
         </Container>
       </section>
 
-      <AnchorNav items={projectAnchors} label="项目详情导航" />
+      <AnchorNav items={projectAnchors} label="专题详情导航" />
 
       <section className="section-anchor section-space bg-white" id="overview">
         <Container>
-          <SectionHeading title="项目概况" description="基础字段来自项目数据文件，后续可直接替换为经过确认的真实资料。" />
+          <SectionHeading title="专题概况" description="背景、目的与基础信息集中说明本次实践专题。" />
           <ProjectMeta project={project} />
           <div className="mt-12 grid gap-10 lg:grid-cols-2">
             <div>
@@ -162,13 +162,13 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
 
       <section className="section-anchor section-space bg-paper" id="people">
         <Container>
-          <SectionHeading title="相关人物" description="项目关联人物由数据关系自动生成。" />
+          <SectionHeading title="英烈档案" description="与本次实践专题相关的英烈档案由数据关系自动生成。" />
           {relatedPeople.length ? (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {relatedPeople.map((person) => <PersonCard key={person.id} person={person} projectTitle={project.title} />)}
             </div>
           ) : (
-            <EmptyState title="相关人物待补充" description="为项目和人物建立关联后，该区域会自动显示。" />
+            <EmptyState title="英烈档案待补充" description="为专题和档案建立关联后，该区域会自动显示。" />
           )}
         </Container>
       </section>
@@ -182,13 +182,13 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
 
       <section className="section-anchor section-space bg-paper" id="stories">
         <Container>
-          <SectionHeading title="实践纪实" description="相关文章通过项目关联自动读取。" />
+          <SectionHeading title="活动动态" description="相关报道和实践日志通过专题关联自动读取。" />
           {relatedStories.length ? (
             <div className="grid gap-1">
               {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={project.title} story={story} />)}
             </div>
           ) : (
-            <EmptyState title="实践纪实待补充" description="新增并关联纪实文章后，该区域会自动更新。" />
+            <EmptyState title="活动动态待补充" description="新增并关联动态后，该区域会自动更新。" />
           )}
         </Container>
       </section>
@@ -202,7 +202,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
 
       <section className="section-anchor section-space bg-paper" id="achievements">
         <Container>
-          <SectionHeading title="实践成果" description="成果文件处于整理中时不会跳转到无效地址。" />
+          <SectionHeading title="产品展示" description="课程、折页、视频和报告等产品统一在这里展示。" />
           {relatedAchievements.length ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {relatedAchievements.map((achievement) => (
@@ -210,7 +210,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailProps) 
               ))}
             </div>
           ) : (
-            <EmptyState title="实践成果待补充" description="关联成果条目后，该区域会自动展示对应内容。" />
+            <EmptyState title="实践产品待补充" description="关联产品条目后，该区域会自动展示对应内容。" />
           )}
         </Container>
       </section>

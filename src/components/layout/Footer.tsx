@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/src/config/site";
 import { BrandLogo } from "@/src/components/brand/BrandLogo";
-import { navigationItems } from "@/src/data/navigation";
+import { archiveNavigationItems, navigationItems } from "@/src/data/navigation";
 import { BackToTop } from "@/src/components/ui/BackToTop";
 import { Container } from "@/src/components/ui/Container";
 
@@ -24,6 +24,18 @@ export function Footer() {
               {navigationItems.map((item) => (
                 <li key={item.href}>
                   <Link className="inline-flex min-h-9 items-center rounded-[8px] text-sm text-white/70 transition hover:text-white focus-visible:bg-white/10" href={item.href}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <h3 className="mt-6 border-t border-white/15 pt-5 text-xs font-semibold text-white/55">
+              资料索引
+            </h3>
+            <ul className="mt-3 grid gap-2">
+              {archiveNavigationItems.map((item) => (
+                <li key={item.href}>
+                  <Link className="inline-flex min-h-9 items-center text-sm text-white/70 transition hover:text-white" href={item.href}>
                     {item.label}
                   </Link>
                 </li>

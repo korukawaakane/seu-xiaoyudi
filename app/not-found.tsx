@@ -21,7 +21,7 @@ export default function NotFound() {
             </Link>
             <Link className="btn-secondary" href="/projects">
               <Archive aria-hidden="true" size={18} />
-              浏览历届实践
+              浏览实践专题
             </Link>
           </div>
         </div>

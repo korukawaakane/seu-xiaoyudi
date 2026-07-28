@@ -6,26 +6,26 @@ import { PageHero } from "@/src/components/ui/PageHero";
 import { getAchievements, getProjects } from "@/src/lib/content";
 
 export const metadata: Metadata = {
-  title: { absolute: "实践成果｜SEU“小雨滴”社会实践团" },
-  description: "展示调研报告、展示文稿、视频作品、宣传海报等实践成果占位条目。",
+  title: { absolute: "产品展示｜SEU“小雨滴”社会实践团" },
+  description: "展示课程、折页、配套视频、调研报告等社会实践产品。",
   alternates: { canonical: "/achievements" },
   openGraph: {
-    title: "实践成果｜SEU“小雨滴”社会实践团",
-    description: "展示调研报告、展示文稿、视频作品、宣传海报等实践成果占位条目。",
+    title: "产品展示｜SEU“小雨滴”社会实践团",
+    description: "展示课程、折页、配套视频、调研报告等社会实践产品。",
     url: "/achievements",
     images: [
       {
         url: "/images/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "实践成果｜SEU“小雨滴”社会实践团",
+        alt: "产品展示｜SEU“小雨滴”社会实践团",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "实践成果｜SEU“小雨滴”社会实践团",
-    description: "展示调研报告、展示文稿、视频作品、宣传海报等实践成果条目。",
+    title: "产品展示｜SEU“小雨滴”社会实践团",
+    description: "展示课程、折页、配套视频、调研报告等社会实践产品。",
     images: ["/images/og-image.svg"],
   },
 };
@@ -36,10 +36,10 @@ export default async function AchievementsPage() {
   return (
     <>
       <PageHero
-        eyebrow="成果中心"
-        title="让每份实践成果可持续归档"
-        description="成果条目按类型、所属项目、年份和关键词筛选；未提供真实文件时不会生成无效链接。"
-        stat={{ value: String(achievements.length), label: "项已收录成果" }}
+        eyebrow="产品展示"
+        title="让实践成果成为可使用的产品"
+        description="课程、折页、配套视频、调研报告等内容按类型、实践专题和年份统一展示。"
+        stat={{ value: String(achievements.length), label: "项已公开产品" }}
       />
       <section className="section-space bg-paper">
         <Container>

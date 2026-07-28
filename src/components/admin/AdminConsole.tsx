@@ -234,7 +234,7 @@ function validateDocument(
   if (collection === "stories") {
     const story = document as Story;
     if (!story.title.trim()) return "请填写文章标题";
-    if (!story.projectId) return "请选择所属项目";
+    if (!story.projectId) return "请选择所属实践专题";
     if (!story.author.trim()) return "请填写作者或整理人员";
     if (!story.summary.trim()) return "请填写文章摘要";
     if (!story.content.length) return "请填写文章正文";
@@ -243,7 +243,7 @@ function validateDocument(
   if (collection === "achievements") {
     const achievement = document as Achievement;
     if (!achievement.title.trim()) return "请填写成果名称";
-    if (!achievement.projectId) return "请选择所属项目";
+    if (!achievement.projectId) return "请选择所属实践专题";
     if (!achievement.summary.trim()) return "请填写成果摘要";
   }
 

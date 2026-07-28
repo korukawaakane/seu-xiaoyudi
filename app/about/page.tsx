@@ -10,19 +10,19 @@ import { siteConfig } from "@/src/config/site";
 import { getAboutContent } from "@/src/lib/content";
 
 export const metadata: Metadata = {
-  title: "关于我们",
-  description: siteConfig.teamName + "社会实践数字档案与成果展示平台介绍。",
+  title: "团队简介",
+  description: siteConfig.teamName + "的成立初衷、发展历程、团队荣誉与组织传承。",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "关于我们｜SEU“小雨滴”社会实践团",
-    description: siteConfig.teamName + "社会实践数字档案与成果展示平台介绍。",
+    title: "团队简介｜SEU“小雨滴”社会实践团",
+    description: siteConfig.teamName + "的成立初衷、发展历程、团队荣誉与组织传承。",
     url: "/about",
-    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "关于 SEU“小雨滴”社会实践团" }],
+    images: [{ url: "/images/og-image.svg", width: 1200, height: 630, alt: "SEU“小雨滴”社会实践团团队简介" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "关于我们｜SEU“小雨滴”社会实践团",
-    description: siteConfig.teamName + "社会实践数字档案与成果展示平台介绍。",
+    title: "团队简介｜SEU“小雨滴”社会实践团",
+    description: siteConfig.teamName + "的成立初衷、发展历程、团队荣誉与组织传承。",
     images: ["/images/og-image.svg"],
   },
 };
@@ -35,15 +35,34 @@ export default function AboutPage() {
   return (
     <>
       <PageHero
-        eyebrow="关于我们"
+        eyebrow="团队简介"
         title={siteConfig.teamName}
-        description={siteConfig.secondarySlogan}
+        description="从团队初衷出发，梳理发展历程、集体荣誉与历届成员的实践传承。"
         tone="dark"
       >
         <BrandLogo tone="dark" />
       </PageHero>
 
       <section className="section-space bg-white">
+        <Container>
+          <SectionHeading
+            eyebrow="团队概览"
+            title="初衷、历史与荣誉"
+            description="三部分各自承担明确内容，避免团队介绍与实践项目资料混在一起。"
+          />
+          <div className="grid gap-5 lg:grid-cols-3">
+            {aboutContent.profileSections.map((item, index) => (
+              <article className="border-t-2 border-brand bg-paper p-6" key={item.title}>
+                <p className="text-sm font-semibold text-brand">0{index + 1}</p>
+                <h2 className="mt-5 font-serif text-2xl font-semibold text-ink">{item.title}</h2>
+                <p className="mt-4 text-sm leading-7 text-muted">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="section-space bg-paper">
         <Container>
           <div className="grid gap-10 lg:grid-cols-2">
             <div>
@@ -57,14 +76,14 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="section-space bg-paper">
+      <section className="section-space bg-white">
         <Container>
-          <SectionHeading title="平台内容结构" description="后续真实资料录入时，应保持以下内容边界清晰。" />
+          <SectionHeading title="网站内容分区" description="每类内容只承担一种主要职责，项目和年份仅作为关联索引。" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {aboutContent.scopes.map((item) => (
-              <article className="border-t-2 border-brand/25 bg-white p-5" key={item}>
+              <article className="border-t-2 border-brand/25 bg-paper p-5" key={item}>
                 <Tag tone="red">{item}</Tag>
-                <p className="mt-4 text-sm leading-7 text-muted">这里用于说明{item}的收录标准、资料来源和维护方式。</p>
+                <p className="mt-4 text-sm leading-7 text-muted">集中整理{item}，并保留必要的来源和关联信息。</p>
               </article>
             ))}
           </div>
@@ -92,12 +111,12 @@ export default function AboutPage() {
 
       <section className="section-space bg-paper">
         <Container>
-          <SectionHeading title="团队信息占位" description="本阶段不填写真实团队成员、指导老师和联系方式。" />
+          <SectionHeading title="团队组成" description="指导教师、项目成员与历届团队分别整理，避免名单与团队历史混排。" />
           <div className="grid gap-4 lg:grid-cols-3">
             {aboutContent.teamPlaceholders.map((item) => (
               <article className="border border-line bg-white p-5" key={item}>
                 <h2 className="font-serif text-xl font-semibold text-ink">{item}</h2>
-                <p className="mt-3 text-sm leading-7 text-muted">确认真实资料与授权后，再统一录入该部分内容。</p>
+                <p className="mt-3 text-sm leading-7 text-muted">相关名单与介绍将在资料确认并获得授权后统一补充。</p>
               </article>
             ))}
           </div>

@@ -12,10 +12,10 @@ type SearchExplorerProps = {
 };
 
 const typeLabels: Record<SearchResultType, string> = {
-  project: "项目",
-  person: "人物",
-  story: "文章",
-  achievement: "成果",
+  project: "实践专题",
+  person: "英烈档案",
+  story: "活动动态",
+  achievement: "产品",
 };
 
 export function SearchExplorer({ items }: SearchExplorerProps) {
@@ -125,7 +125,7 @@ export function SearchExplorer({ items }: SearchExplorerProps) {
         <div className="mt-8">
           <EmptyState
             title="输入关键词开始搜索"
-            description="标签、人物关键词、文章分类和成果类型都可以直接检索。"
+            description="专题标签、英烈关键词、动态分类和产品类型都可以直接检索。"
           />
         </div>
       )}

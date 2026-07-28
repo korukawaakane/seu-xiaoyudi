@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PersonDetailProps): Promise<M
   const { slug } = await params;
   const person = await getPersonBySlug(slug);
   if (!person) return {};
-  const title = `${person.name}｜人物档案｜SEU“小雨滴”社会实践团`;
+  const title = `${person.name}｜英烈档案｜SEU“小雨滴”社会实践团`;
 
   return {
     title: { absolute: title },
@@ -89,7 +89,7 @@ export default async function PersonDetailPage({ params }: PersonDetailProps) {
           <Breadcrumb
             items={[
               { label: "首页", href: "/" },
-              { label: "人物档案", href: "/people" },
+              { label: "英烈档案", href: "/people" },
               { label: person.name },
             ]}
           />
@@ -105,7 +105,7 @@ export default async function PersonDetailPage({ params }: PersonDetailProps) {
               <p className="mt-5 max-w-3xl text-base leading-8 text-muted">{person.summary}</p>
               <Link className="btn-secondary mt-7" href="/people">
                 <ArrowLeft aria-hidden="true" size={18} />
-                返回人物档案
+                返回英烈档案
               </Link>
             </div>
           </div>
@@ -165,19 +165,19 @@ export default async function PersonDetailPage({ params }: PersonDetailProps) {
 
       <section className="section-anchor section-space bg-white" id="projects">
         <Container>
-          <SectionHeading title="相关实践项目" description="人物可以关联多个实践项目。" />
+          <SectionHeading title="相关实践专题" description="英烈档案可以关联多个实践专题。" />
           {relatedProjects.length ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {relatedProjects.map((project) => <ProjectCard key={project.id} project={project} />)}
             </div>
           ) : (
-            <EmptyState title="关联项目待补充" description="建立人物与项目关系后，该区域会自动更新。" />
+            <EmptyState title="关联专题待补充" description="建立档案与专题关系后，该区域会自动更新。" />
           )}
           {relatedStories.length ? (
             <div className="mt-12">
-              <SectionHeading title="相关文章" description="相关纪实文章由人物数据中的关联标识自动读取。" />
+              <SectionHeading title="相关动态" description="相关活动动态由档案数据中的关联标识自动读取。" />
               <div className="grid gap-1">
-                {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={projectTitles.get(story.projectId) ?? "未关联项目"} story={story} />)}
+                {relatedStories.map((story) => <StoryCard compact key={story.id} projectTitle={projectTitles.get(story.projectId) ?? "未关联专题"} story={story} />)}
               </div>
             </div>
           ) : null}

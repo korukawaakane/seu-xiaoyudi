@@ -25,23 +25,23 @@ export function AchievementsExplorer({ achievements, projects }: AchievementsExp
   const filtered = filterAchievements(achievements, projects, filters);
   const hasActiveFilters = Object.values(filters).some(Boolean);
   const projectTitle = (id: string) =>
-    projects.find((project) => project.id === id)?.title ?? "实践项目占位";
+    projects.find((project) => project.id === id)?.title ?? "未关联专题";
 
   return (
     <>
       <FilterBar>
         <FilterField label="关键词搜索">
-          <input aria-label="关键词搜索" className="field-control" onChange={(event) => update("keyword", event.currentTarget.value)} onInput={(event) => update("keyword", event.currentTarget.value)} placeholder="成果名称或简介关键词" type="search" value={filters.keyword} />
+          <input aria-label="关键词搜索" className="field-control" onChange={(event) => update("keyword", event.currentTarget.value)} onInput={(event) => update("keyword", event.currentTarget.value)} placeholder="产品名称或简介关键词" type="search" value={filters.keyword} />
         </FilterField>
-        <FilterField label="成果类型">
-          <select aria-label="成果类型" className="field-control" onChange={(event) => update("type", event.currentTarget.value)} onInput={(event) => update("type", event.currentTarget.value)} value={filters.type}>
+        <FilterField label="产品类型">
+          <select aria-label="产品类型" className="field-control" onChange={(event) => update("type", event.currentTarget.value)} onInput={(event) => update("type", event.currentTarget.value)} value={filters.type}>
             <option value="">全部类型</option>
             {types.map((type) => <option key={type} value={type}>{type}</option>)}
           </select>
         </FilterField>
-        <FilterField label="所属项目">
-          <select aria-label="所属项目" className="field-control" onChange={(event) => update("project", event.currentTarget.value)} onInput={(event) => update("project", event.currentTarget.value)} value={filters.project}>
-            <option value="">全部项目</option>
+        <FilterField label="实践专题">
+          <select aria-label="实践专题" className="field-control" onChange={(event) => update("project", event.currentTarget.value)} onInput={(event) => update("project", event.currentTarget.value)} value={filters.project}>
+            <option value="">全部专题</option>
             {projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}
           </select>
         </FilterField>
@@ -53,7 +53,7 @@ export function AchievementsExplorer({ achievements, projects }: AchievementsExp
         </FilterField>
       </FilterBar>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
-        <p aria-live="polite" className="text-sm text-muted">当前显示 {filtered.length} 项实践成果</p>
+        <p aria-live="polite" className="text-sm text-muted">当前显示 {filtered.length} 项实践产品</p>
         <button className="btn-secondary min-h-10 px-4 py-2" disabled={!hasActiveFilters} onClick={() => reset(["keyword", "type", "project", "year"])} type="button">
           重置筛选
         </button>
@@ -65,7 +65,7 @@ export function AchievementsExplorer({ achievements, projects }: AchievementsExp
           ))}
         </div>
       ) : (
-        <EmptyState title="没有符合条件的实践成果" description="请调整关键词、成果类型、所属项目或年份筛选条件。" />
+        <EmptyState title="没有符合条件的实践产品" description="请调整关键词、产品类型、实践专题或年份筛选条件。" />
       )}
     </>
   );

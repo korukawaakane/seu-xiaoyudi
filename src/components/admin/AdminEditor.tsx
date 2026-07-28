@@ -279,7 +279,7 @@ function StoryEditor({
             {storyCategories.map((category) => <option key={category}>{category}</option>)}
           </Select>
         </Field>
-        <Field label="所属项目" required>
+        <Field label="所属实践专题" required>
           <Select onChange={(projectId) => onChange({ ...document, projectId })} value={document.projectId}>
             <option value="">请选择项目</option>
             {projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}
@@ -346,7 +346,7 @@ function AchievementEditor({
             {achievementTypes.map((type) => <option key={type}>{type}</option>)}
           </Select>
         </Field>
-        <Field label="所属项目" required>
+        <Field label="所属实践专题" required>
           <Select onChange={(projectId) => onChange({ ...document, projectId })} value={document.projectId}>
             <option value="">请选择项目</option>
             {projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}

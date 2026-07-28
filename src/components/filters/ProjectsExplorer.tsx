@@ -89,7 +89,7 @@ export function ProjectsExplorer({ projects }: ProjectsExplorerProps) {
               <div className="mb-6 flex items-end gap-5 border-b border-line pb-4">
                 <p aria-hidden="true" className="archive-year">{group.year}</p>
                 <p className="pb-1 text-sm text-muted" id={"projects-year-" + group.year}>
-                  该年度收录 {group.projects.length} 个实践项目
+                  该年度收录 {group.projects.length} 个实践专题
                 </p>
               </div>
               <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -100,7 +100,7 @@ export function ProjectsExplorer({ projects }: ProjectsExplorerProps) {
         </div>
       ) : (
         <EmptyState
-          title="没有符合条件的实践项目"
+          title="没有符合条件的实践专题"
           description="请调整年份、学期、主题或地点筛选条件；新增项目时会自动进入此列表。"
         />
       )}

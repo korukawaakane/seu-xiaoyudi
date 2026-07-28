@@ -31,7 +31,7 @@ export function PersonCard({ person, projectTitle }: PersonCardProps) {
       <p className="mt-1 text-sm text-muted">{person.years}</p>
       <p className="mt-3 line-clamp-3 text-sm leading-7 text-muted">{person.summary}</p>
       {projectTitle ? (
-        <p className="mt-4 text-xs font-medium text-muted">所属项目：{projectTitle}</p>
+        <p className="mt-4 text-xs font-medium text-muted">实践专题：{projectTitle}</p>
       ) : null}
       <Link className="action-link mt-5" href={"/people/" + person.slug}>
         查看详情
