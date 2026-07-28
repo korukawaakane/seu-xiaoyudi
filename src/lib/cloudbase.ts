@@ -5,14 +5,20 @@ type CloudCollection = "projects" | "people" | "stories" | "achievements";
 type CloudDocument = Record<string, unknown> & { _id?: unknown; _openid?: unknown };
 
 const cloudRequests = new Map<CloudCollection, Promise<unknown[]>>();
+let cloudApp: ReturnType<typeof cloudbase.init> | undefined;
 
-function getDatabase() {
+export function getCloudApp() {
   const envId = process.env.NEXT_PUBLIC_CLOUDBASE_ENV_ID;
   if (!envId) {
     throw new Error("NEXT_PUBLIC_CLOUDBASE_ENV_ID is not configured");
   }
 
-  return cloudbase.init({ env: envId }).database();
+  cloudApp ??= cloudbase.init({ env: envId });
+  return cloudApp;
+}
+
+function getDatabase() {
+  return getCloudApp().database();
 }
 
 function toContentDocument<T>(collection: CloudCollection, value: unknown): T {
